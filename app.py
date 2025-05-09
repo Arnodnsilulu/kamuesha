@@ -10,6 +10,10 @@ app.secret_key="application_de_la_gestionEglise"
 
 #acceuil 
 @app.route('/')
+def home():
+    return render_template('front/index.html')
+
+@app.route('/login')
 def login():
 
     return render_template('auth-login.html')
