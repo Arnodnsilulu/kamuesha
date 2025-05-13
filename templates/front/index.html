@@ -9,7 +9,7 @@
 		<title>crmk</title>
 		<link rel="shortcut icon" type="image/x-icon" href="img/logos.jpg">
 		<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,700" rel="stylesheet">
-		<link href="{{url_for('static', filename = 'front/assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
+		<link href="{{url_for('static', filename = '/front/assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
 		<link href="{{url_for('static', filename = 'front/assets/css/owl.carousel.css')}}" rel="stylesheet" type="text/css">
 		<link href="{{url_for('static', filename = 'front/assets/css/font-awesome.css')}}" rel="stylesheet" type="text/css">
 		<link href="{{url_for('static', filename = 'front/assets/css/ionicons.css')}}" rel="stylesheet" type="text/css">
@@ -56,7 +56,8 @@
 					<div class="row">
 						<div class="col-md-3">
 							<div class="logo">
-								<a href="index-2.html"><img src="img/logos.jpg " height="80px" width="80px" alt=""></a>
+								<a href="/"><img src="{{url_for('static', filename ='front/assets/images/banner/' )}}" height="80px" width="80px" alt=""></a>
+								
 							</div>
 							<!-- Phone Menu button -->
 							<button id="menu" class="menu hidden-md-up"></button>
@@ -64,8 +65,15 @@
 						<div class="col-md-9 nav-bg d-flex align-items-center">
 							<nav class="navigation">
 								<ul>
+									{% if session['session']%}
 									<li>
-										<a href="index.html">Acceuil</a><i class="ion-ios-plus-empty hidden-md-up"></i>
+										<a href="/index">Controle</a><i class="ion-ios-plus-empty hidden-md-up"></i>
+										
+									</li>
+									{%endif%}
+
+									<li>
+										<a href="/">Acceuil</a><i class="ion-ios-plus-empty hidden-md-up"></i>
 										
 									</li>
 
@@ -96,10 +104,21 @@
 										
 									</li>
 
+									
+
+									{% if session['session'] %}
+									<li>
+										<a href="/deco">Deconnexion</a><i class="ion-ios-plus-empty hidden-md-up"></i>
+										
+									</li>
+									{% else %}
 									<li>
 										<a href="/login">Login</a><i class="ion-ios-plus-empty hidden-md-up"></i>
 										
 									</li>
+									{%endif%}
+
+
 
 								</ul>
 
@@ -121,7 +140,7 @@
 						<!-- SLIDE  -->
 						<li data-index="rs-129">
 							<!-- MAIN IMAGE -->
-							<img src="{{url_for('static', filename = 'front/assets/images/banner/banner_1.jpg')}}"  alt=""  class="rev-slidebg" >
+							<img src="{{url_for('static', filename = 'front/assets/images/banner/img3.jpg')}}"  alt=""  class="rev-slidebg" >
 							<!-- LAYERS -->
 
 							<!-- LAYER NR. 2 -->
@@ -146,10 +165,10 @@
 							data-responsive_offset="on" >
 								<div class="banner-text">
 									<span>Des services etonnantes!</span>
-									<h2>bienvenue dans le portail de édifices <span>light construction</span></h2>
+									<h2>Lorem ipsum dolor sit amet. <span>Lorem ipsum dolor sit amet.</span></h2>
 
 									<p>
-										construire dans la modernité n'est pas un luxe,mais plutot une nécessité.
+										Lorem ipsum dolor sit amet.
 									</p>
 									<a class="btn-text" href="about_us.html"> Lire la suite</a>
 								</div>
@@ -159,7 +178,7 @@
 						<!-- SLIDE  -->
 						<li data-index="rs-130"   data-title="" data-description="">
 							<!-- MAIN IMAGE -->
-							<img src="{{url_for('static', filename = 'front/assets/images/banner/banner_2.jpg')}}"  alt=""  class="rev-slidebg" >
+							<img src="{{url_for('static', filename = 'front/assets/images/banner/img2.jpg')}}"  alt=""  class="rev-slidebg" >
 							<!-- LAYERS -->
 
 							<!-- LAYER NR. 2 -->
@@ -183,11 +202,11 @@
 							data-splitout="none"
 							data-responsive_offset="on" >
 								<div class="banner-text">
-									<span>des services étonnantes!</span>
-									<h2>vous assure les meilleurs <span>Services & Solutions</span></h2>
+									<span>Lorem ipsum dolor sit amet.!</span>
+									<h2>Lorem ipsum dolor sit amet. <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil, incidunt?</span></h2>
 
 									<p>
-										la vie n'est suffit pas seulement d'etre en vie,mais aussi le bien etre dans le meilleursconditions de nos batiments.
+										Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odit, iure!.
 									</p>
 									<a class="btn-text" href="about_us.html"> Lire la suite</a>
 								</div>
@@ -197,7 +216,7 @@
 						<!-- SLIDE  -->
 						<li data-index="rs-131">
 							<!-- MAIN IMAGE -->
-							<img src="{{url_for('static', filename = 'front/assets/images/banner/banner_3.jpg')}}"  alt=""  class="rev-slidebg" >
+							<img src="{{url_for('static', filename = 'front/assets/images/banner/img1.jpg')}}"  alt=""  class="rev-slidebg" >
 							<!-- LAYERS -->
 
 							<!-- LAYER NR. 2 -->
@@ -221,11 +240,11 @@
 							data-splitout="none"
 							data-responsive_offset="on" >
 								<div class="banner-text">
-									<span>des services étonnantes!</span>
-									<h2>nous somme valable dans  <span>tout les travaux de construction</span></h2>
+									<span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, fugit.!</span>
+									<h2>Lorem ipsum dolor sit amet.<span>Lorem ipsum dolor sit amet.</span></h2>
 
 									<p>
-										quand vous nous faites confiances,vous ne serez jamais decu!
+										Lorem ipsum dolor sit amet.!
 									</p>
 									<a class="btn-text" href="about_us.html"> Lire la suite</a>
 								</div>
@@ -246,14 +265,11 @@
 					<div class="col-md-12 col-lg-7 about-left">
 
 						<div class="sec_hedding">
-							<h2><span>Apropos  </span>light construction</h2>
+							<h2><span>Apropos  </span>Lorem ipsum dolor sit amet.</h2>
 							<span class="b-line l-left"></span>
 						</div>
 						<p>
-							light construction est une platform des services d'architecture
-							pour aidé la population congolaise à construire dans la modernité 
-							informé les congolais sur la modernité,aidée les jeunes techniciens et
-							donner l'opportunité d'emplois aux jeunes.
+							Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam in mollitia modi et qui asperiores cumque fugit provident doloribus harum nesciunt quibusdam, at eaque veniam! Repellat hic et unde voluptate.
 						</p>
 						<div class="row mt-30">
 							<div class="col-lg-4 col-md-4 process mb-40">
@@ -263,7 +279,7 @@
 								<div class="right-txt float-right">
 									<h3>Aide Rapide</h3>
 									<p>
-										(+243) 829 672 799
+										Lorem ipsum dolor sit amet.
 									</p>
 								</div>
 							</div>
@@ -287,7 +303,7 @@
 								<div class="right-txt float-right">
 									<h3>Evenements</h3>
 									<p>
-										Light Construction
+										Lorem ipsum dolor sit amet.
 									</p>
 								</div>
 							</div>
@@ -331,9 +347,9 @@
 									</div>
 								</div>
 								<div class="datail_show">
-									<h3>Construction Management</h3>
+									<h3>Lorem ipsum dolor sit amet.</h3>
 									<p>
-										La Technique d'organisation et de gestion d'entreprise 
+										Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perspiciatis, natus.
 									</p>
 									<a href="#!">lire la suite</a>
 								</div>
@@ -355,9 +371,9 @@
 									</div>
 								</div>
 								<div class="datail_show">
-									<h3>Rehabilitation</h3>
+									<h3>Lorem ipsum dolor sit amet.</h3>
 									<p>
-										Service d'Amelioration en donnant une forme nouvelle,moderne 
+										Lorem ipsum dolor sit amet. 
 									</p>
 									<a href="#!">Lire la suite</a>
 								</div>
@@ -379,9 +395,9 @@
 									</div>
 								</div>
 								<div class="datail_show">
-									<h3>Etude Architectural</h3>
+									<h3>Lorem ipsum dolor sit amet.</h3>
 									<p>
-										Une Répresentation graphique constituant un projet lie à l'architecture
+										Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid, velit.
 									</p>
 									<a href="#!">Lire la suite</a>
 								</div>
@@ -403,9 +419,9 @@
 									</div>
 								</div>
 								<div class="datail_show">
-									<h3>Conception</h3>
+									<h3>Lorem ipsum dolor sit amet.</h3>
 									<p>
-										formation d'une nouvelle édifices matériel suite à la concéption d'un plan Architectural.
+										Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quasi, voluptates..
 									</p>
 									<a href="#!">Lire la suite</a>
 								</div>
@@ -427,9 +443,9 @@
 									</div>
 								</div>
 								<div class="datail_show">
-									<h3>Expertise immobilière</h3>
+									<h3>Lorem ipsum dolor sit amet.</h3>
 									<p>
-										domaine d'expertise des meubles
+										Lorem ipsum dolor sit amet.
 									</p>
 									<a href="#!">Lire la suite</a>
 								</div>
@@ -451,9 +467,9 @@
 									</div>
 								</div>
 								<div class="datail_show">
-									<h3>Aménagement ext & int</h3>
+									<h3>Lorem ipsum dolor sit amet.</h3>
 									<p>
-										expert en dispostion interne ou externe des meubles
+										Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi, obcaecati.
 									</p>
 									<a href="#!">Lire a suite</a>
 								</div>
@@ -475,9 +491,9 @@
 									</div>
 								</div>
 								<div class="datail_show">
-									<h3>Plomberie</h3>
+									<h3>Lorem ipsum dolor sit amet.</h3>
 									<p>
-										spécialiste en pose des conduites et des appareils de distribution d'eau, de gaz d'un édifices. 
+										Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit, corporis?. 
 									</p>
 									<a href="#!">Lire la suite</a>
 								</div>
@@ -499,9 +515,9 @@
 									</div>
 								</div>
 								<div class="datail_show">
-									<h3>Electricité et carrelage</h3>
+									<h3>Lorem ipsum dolor sit amet.</h3>
 									<p>
-										expert en mise en place de l'énergie d'usage domestique, industriel, technique et Pavage des carreaux.
+										Lorem ipsum dolor sit amet consectetur, adipisicing elit. Esse, omnis!.
 									</p>
 									<a href="#!">Lire la suite</a>
 								</div>
@@ -521,7 +537,7 @@
 				<div class="row text-center mb-30  light-color">
 					<div class="col-sm-12">
 						<div class="sec_hedding">
-							<h2><span>Annonce</span>Express</h2>
+							<h2><span>Lorem, ipsum dolor.</span>Lorem, ipsum dolor.</h2>
 							<span class="b-line"></span>
 						</div>
 					</div>
@@ -599,7 +615,7 @@
 							<div class="team_head">
 								<div class="team_view">
 									<figure>
-										<img src="img/light2.jpg" alt="">
+										<img src="img/" alt="">
 									</figure>
 
 									<div class="team_hover text-center">
@@ -619,21 +635,21 @@
 												</li>
 											</ul>
 											<p class="text-white">
-												Membre de the light construction.
+												Lorem ipsum dolor sit amet..
 											</p>
 										</div>
 									</div>
 								</div>
 								<div class="team_discoption text-center mt-15">
-									<span class="team_name">Light kibaba</span>
-									<span class="postion">Architect et Fondateur</span>
+									<span class="team_name">john doe</span>
+									<span class="postion">Lorem ipsum dolor sit amet.</span>
 								</div>
 							</div>
 
 							<div class="team_head">
 								<div class="team_view">
 									<figure>
-										<img src="img/LP.jpg" alt="">
+										<img src="img/" alt="">
 									</figure>
 
 									<div class="team_hover text-center">
@@ -653,21 +669,21 @@
 												</li>
 											</ul>
 											<p class="text-white">
-												Membre de the light construction.
+												Lorem ipsum dolor sit amet..
 											</p>
 										</div>
 									</div>
 								</div>
 								<div class="team_discoption text-center mt-15">
-									<span class="team_name">Louange Manene</span>
-									<span class="postion">Architect</span>
+									<span class="team_name">john doe</span>
+									<span class="postion">Lorem ipsum dolor sit amet.</span>
 								</div>
 							</div>
 
 							<div class="team_head">
 								<div class="team_view">
 									<figure>
-										<img src="img/gédéon.jpg" alt="">
+										<img src="img/" alt="">
 									</figure>
 
 									<div class="team_hover text-center">
@@ -687,21 +703,21 @@
 												</li>
 											</ul>
 											<p class="text-white">
-												Membre de the light construction.
+												Lorem ipsum dolor sit amet consectetur, adipisicing elit. Temporibus, sint..
 											</p>
 										</div>
 									</div>
 								</div>
 								<div class="team_discoption text-center mt-15">
-									<span class="team_name">Gédéon</span>
-									<span class="postion">Chef du Personnel</span>
+									<span class="team_name">john doe</span>
+									<span class="postion">Lorem ipsum dolor sit amet.</span>
 								</div>
 							</div>
 
 							<div class="team_head">
 								<div class="team_view">
 									<figure>
-										<img src="img/charme.jpg" alt="">
+										<img src="img/" alt="">
 									</figure>
 
 									<div class="team_hover text-center">
@@ -721,14 +737,14 @@
 												</li>
 											</ul>
 											<p class="text-white">
-												Membre de the light construction.
+												Lorem ipsum dolor sit amet..
 											</p>
 										</div>
 									</div>
 								</div>
 								<div class="team_discoption text-center mt-15">
-									<span class="team_name">Charme</span>
-									<span class="postion">Ingénieur BPT</span>
+									<span class="team_name">john doe</span>
+									<span class="postion">Lorem ipsum dolor sit amet.</span>
 								</div>
 							</div>
 
@@ -759,13 +775,13 @@
 								<img src="img/bnfit.jpg" alt="">
 								<div class="opacity-medium bg-extra-black"></div>
 								<div class="date_top">
-									<span>Projet Benefit hopital</span>
+									<span>Lorem ipsum dolor sit amet.</span>
 								</div>
 								<div class="inner_text">
-									<h3 class="show_tital">Etablissement de santé</h3>
+									<h3 class="show_tital">Lorem ipsum dolor sit amet.</h3>
 
 									<p class="display_block">
-										Un projet d'une grande Envergure 
+										Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat, odit?
 									</p>
 									<button class="btn btn-text" type="button" name="button">
 										Lire la suite
@@ -781,13 +797,13 @@
 								<img src="img/pen.jpg" alt="">
 								<div class="opacity-medium bg-extra-black"></div>
 								<div class="date_top">
-									<span>Etablissement Pénitentiaire</span>
+									<span>Lorem ipsum dolor sit amet.</span>
 								</div>
 								<div class="inner_text">
-									<h3 class="show_tital">La Prison national de Makala</h3>
+									<h3 class="show_tital">Lorem ipsum dolor sit amet.</h3>
 
 									<p class="display_block">
-										un Projet d'établissement Pénitentiaire des droits humaine à kinshasa
+										Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aliquid, sunt?
 									</p>
 									<button class="btn btn-text" type="button" name="button">
 										Lire la suite
@@ -803,13 +819,13 @@
 								<img src="img/tour.jpg" alt="">
 								<div class="opacity-medium bg-extra-black"></div>
 								<div class="date_top">
-									<span>Projet tour spirale</span>
+									<span>Lorem ipsum dolor sit amet.</span>
 								</div>
 								<div class="inner_text">
-									<h3 class="show_tital">tour spirale</h3>
+									<h3 class="show_tital">Lorem ipsum dolor sit amet.</h3>
 
 									<p class="display_block">
-										construction moderne en spirale
+										Lorem ipsum dolor sit amet.
 									</p>
 									<button class="btn btn-text" type="button" name="button">
 										Lire la suite
@@ -894,37 +910,37 @@
 						<div class="testimonial_carosule-wrap">
 							<div class="single_carousel pt-40">
 								<p>
-									Coordonateur et Fondateur de L'ISET/Kikwiti
+									Lorem ipsum dolor sit amet.
 								</p>
 								<div class="author_img__block">
 									<div class="author_tablecell__block">
-										<img src="img/fondateur ISET.jpg" alt="">
+										<img src="img/" alt="">
 										<p>
-											Fondateur ISET/Kikwit  <span>Patrice Masonga</span>
+											Lorem ipsum dolor sit amet.  <span>Lorem ipsum dolor sit amet.</span>
 										</p>
 									</div>
 								</div>
 							</div>
 							<div class="single_carousel pt-40">
 								<p>
-									La Fondation Gloire Muana Kuta 
+									Lorem ipsum dolor sit amet. 
 								</p>
 								<div class="author_img__block">
 									<div class="author_tablecell__block">
-										<img src="img/FGMK.jpg" alt="">
+										<img src="img/ alt="">
 										<p>
-											FGMK <span>Fondation FGMK</span>
+											Lorem ipsum dolor sit amet. <span>Lorem ipsum dolor sit amet.</span>
 										</p>
 									</div>
 								</div>
 							</div>
 							<div class="single_carousel pt-40">
 								<p>
-									Initiative Multisectorielle de Developpement
+									Lorem ipsum dolor sit amet.
 								</p>
 								<div class="author_img__block">
 									<div class="author_tablecell__block">
-										<img src="img/IMULD.jpg" alt="">
+										<img src="img/" alt="">
 										<p>
 											IMULD <span>SARL</span>
 										</p>
