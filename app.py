@@ -1,5 +1,7 @@
 from flask import Flask , session , render_template ,request, redirect,flash
 import sqlite3
+import os 
+#import qrcode 
 
 
 
@@ -9,7 +11,8 @@ import sqlite3
 
 
 app = Flask(__name__)
-app.secret_key="application_de_la_gestionEglise"
+app.secret_key="application_de_la_gestionEglise" 
+app.config['UPLOAD_QRCODE'] = 'static/qrcode' 
 
 
 
@@ -67,7 +70,19 @@ def login():
 @app.route("/index")
 def index():
     if 'session' in session:
-        return render_template('index.html')
+        with sqlite3.connect("crmk.db") as con :
+
+            # nombre des utilisateurs dans le systme cote admin et sous-admin
+            nbrU = con.cursor()
+            nbrU.execute("select * from users where fonctionUser in (2,3)")
+            affNbr = len(nbrU.fetchall())
+
+            # nombre des pasteurs dans le systme cote admin et sous-admin
+            nbrP = con.cursor()
+            nbrP.execute("select * from users where fonctionUser in (4)")
+            affNbrP = len(nbrP.fetchall())
+
+        return render_template('index.html', affNbr = affNbr , affNbrP = affNbrP)
     else:
         return redirect('/login')
     
@@ -262,6 +277,141 @@ def deleteP(idUser) :
         cur.execute("delete from users where idUser = ?", [idUser])
         con.commit()
         return redirect('/lstP')   
+#
+# 
+# 
+# change le mot de passe 
+# 
+@app.route('/change' , methods = ['POST','GET'] )
+def change():
+    if 'session' in session:
+
+        if request.method == 'POST':
+            pwd1 = request.form['pwd1']
+            pwd2 = request.form['pwd2']
+            pwd3 = request.form['pwd3']
+
+            with sqlite3.connect("crmk.db") as con :
+                ver = con.cursor()
+                ver.execute("select * from users where idUser = ? and passwordUser = ? ",[session['id'],pwd1])
+                dataVer = ver.fetchone()
+
+                if dataVer:
+                    #verification de mot de passe identique
+                    if pwd2 == pwd3:
+                        cur = con.cursor()
+                        cur.execute("update users set passwordUser = ? where idUser = ?",[pwd2,session['id']])
+                        con.commit()
+                        cur.close()
+                        return redirect('/login')
+                    else:
+                        flash("le mot de passe doit etre conforme !!!")
+                else:
+                    flash("ancien mot de passe incorrecte")
+        return render_template('auth-reset-password.html') 
+    else:
+        return redirect('/login')   
+#
+# #
+# #
+# modification cote pasteur  
+#
+#
+@app.route("/updateP/<string:idUser>", methods = ['POST','GET'])
+def updateP(idUser):
+    if 'session' in session:
+        if request.method == 'POST':
+                
+                
+                nom = request.form['nom']
+                prenom = request.form['prenom']
+                sexe = request.form['sexe']
+                adresse = request.form['adresse']
+                phone = str(request.form['phone'] )
+                ville = session['ville']
+
+                with sqlite3.connect('crmk.db') as con :
+                    cur = con.cursor()
+                    cur.execute("update users set nomUser = ? , prenomUser = ? ,sexeUser = ? , phoneUser = ? , adresseUser = ? where idUser = ?",[nom,prenom,sexe,phone,adresse,idUser]) 
+                    con.commit()
+                    cur.close()
+                    return redirect('/lstP')
+
+        with sqlite3.connect('crmk.db') as con :
+            
+
+            cur = con.cursor()
+            cur.execute("select * from users where idUser = ?",[idUser])
+            data = cur.fetchone()
+
+
+        return render_template('updateP.html', data = data) 
+    else:
+        return redirect('/login') 
+
+#
+#
+# ajout du personnel 
+#
+@app.route('/addP/<string:idUser>', methods = ['POST','GET'])
+def addP(idUser):
+    if 'session' in session:
+        if request.method == 'POST':
+            nom = request.form['nom']
+            prenom = request.form['prenom']
+            sexe = request.form['sexe']
+            phone = str(request.form['phone'])
+            adresse = request.form['adresse']
+            ville = session['ville']
+            fonction = 5 
+            pasteur = idUser 
+            user = session['id'] 
+            dte = request.form['dte'] 
+
+            with sqlite3.connect("crmk.db") as con :
+                #veririfcation du doublon cote numero 
+                ver = con.cursor()
+                ver.execute("select * from personnels where phoneP = ? ",[phone])
+                data = ver.fetchone()
+
+                if data :
+                    flash("le numero existe deja dans le systeme ")
+                else:
+                    cur = con.cursor()
+                    cur.execute("insert into personnels(nomP,prenomP,sexeP,phoneP,fonctionP,adresseP,villeP,pasteurID,userID,dateDebut) values(?,?,?,?,?,?,?,?,?,?)",[nom,prenom,sexe,phone,fonction,adresse,ville,pasteur,user,dte])
+                    con.commit()
+                    cur.close()
+
+                    flash("information enregistre ")    
+
+        return render_template('addPersonnel.html') 
+    else:
+        return redirect('/login')
+
+#
+#
+# liste des personnels 
+@app.route("/lstPl")
+def lstPl():
+    if 'session' in session :
+        ##
+        # 
+        with sqlite3.connect("crmk.db") as con :
+            cur = con.cursor()
+            cur.execute("select * from personnels where userID = ?" , [session['id']]) 
+            dataA = cur.fetchall()
+
+
+            return render_template('lstPl.html', dataA = dataA)
+    else:
+        return redirect('/login') 
+
+#
+# 
+# demo qrcode 
+@app.route('/demo',methods =['POST','GET']) 
+def demo():
+    return render_template('demo.html') 
 
 if __name__ == '__main__':
     app.run(debug=True)

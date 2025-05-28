@@ -2,16 +2,14 @@
 <html lang="en">
 
 
-<!-- export-table.html  21 Nov 2019 03:55:25 GMT -->
+<!-- forms-validation.html  21 Nov 2019 03:55:16 GMT -->
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>crmk - listes</title>
+  <title>crmk - Admin </title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{url_for('static',filename = 'assets/css/app.min.css')}}">
   <!-- Template CSS -->
-  <link rel="stylesheet" href="{{url_for('static',filename = 'assets/bundles/datatables/datatables.min.css')}}">
-  <link rel="stylesheet" href="{{url_for('static',filename = 'assets/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css')}}">
   <link rel="stylesheet" href="{{url_for('static',filename = 'assets/css/style.css')}}">
   <link rel="stylesheet" href="{{url_for('static',filename = 'assets/css/components.css')}}">
   <!-- Custom style CSS -->
@@ -28,8 +26,8 @@
       <div class="main-sidebar sidebar-style-2">
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
-            <a href="/index"> <img alt="image" src="assets/img/logo.png" class="header-logo" /> <span
-                class="logo-name">Otika</span>
+            <a href="index.html"> <img alt="image" src="assets/img/logo.png" class="header-logo" /> <span
+                class="logo-name">crmk</span>
             </a>
           </div>
           {% include '_menu/silader.html'%}
@@ -40,60 +38,72 @@
         <section class="section">
           <div class="section-body">
             <div class="row">
-              <div class="col-12">
+              <div class="col-12 col-md-12 col-lg-12">
                 <div class="card">
-                  <div class="card-header">
-                    <h4>Liste des utilisateurs</h4>
-                  </div>
-                  <div class="card-body">
-                    <div class="table-responsive">
-                      <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
-                        <thead>
-                          <tr>
-                            <th>Nom</th>
-                            <th>Prenom</th>
-                            <th>sexe</th>
-                            <th>phone</th>
-                            <th>Fonction</th>
-                            <th>ville</th>
-                            <th>adresse</th>
-                            <th>eglise</th>
-                            <th>statut</th>
-                            <th>traitement</th>
-                          </tr>
-                        </thead>
+                  {% with messages = get_flashed_messages() %}
+                  {% if messages %}
+                    {% for i in messages %}
+                      <div class="alert alert-warning">{{i}}</div>
+                    {% endfor %}
+                  {% endif %}
+                {% endwith %}
+                  <form method="post" action="">
 
-                        <tbody>
-                          {% for i in dataA %}
-                            <tr>
-                              <td>{{i[1]}}</td>
-                              <td>{{i[2]}}</td>
-                              <td>{{i[3]}}</td>
-                              <td>{{i[4]}}</td>
-                              <td>{{i[5]}}</td>
-                              <td>{{i[6]}}</td>
-                              <td>{{i[7]}}</td>
-                              <td>{{i[8]}}</td>
-                              <td>{{i[9]}}</td>
-                              <td>
-                                <a href="/updateU/{{i[0]}}" class="btn btn-primary">Modifier</a>
-                                <!-- seulement administrateur centrale -->
-                                 {% if session['id'] ==  2 %}
-                                <a href="/statutU/{{i[0]}}" class="btn btn-success">statut</a> 
-                                <a href="/deleteU/{{i[0]}}"  class="btn btn-danger">Supprimer</a> 
-                                {% elif session['id'] ==  1 %}
-                                
-                                <a href="/deleteU/{{i[0]}}"  class="btn btn-danger">Supprimer</a> 
-                                {% endif %}
-                                
-                              </td>
-                            </tr>
-                          {% endfor %}
-                        </tbody>
-                        
-                      </table>
+                    <div class="card-header">
+                      <h4>Formulaire d'enregistrement</h4>
                     </div>
-                  </div>
+                    <div class="card-body">
+                      
+                      <div class="form-group">
+                        <label>Nom</label>
+                        <input type="text" class="form-control" name="nom" required>
+                      </div>
+
+                      <div class="form-group">
+                        <label>Prenom</label>
+                        <input type="text" class="form-control" name="prenom" required>
+                      </div>
+
+                      <div class="form-group">
+                        <label>sexe</label>
+                        <select name="sexe" id="" class="form-control"> 
+                          <option value="M">Masculin</option>
+                          <option value="F">Feminin</option>
+
+                        </select>
+                      </div>
+
+                      <div class="form-group">
+                        <label>telephone</label>
+                        <input type="number" class="form-control" name="phone" required>
+                      </div>
+
+                      <!--  -->
+
+                      <div class="form-group">
+                        <label>adresse</label>
+                        <input type="text" class="form-control" name="adresse" required>
+                      </div>
+
+                      <div class="form-group">
+                        <label>date debut</label>
+                        <input type="date" class="form-control" name="dte" required>
+                      </div>
+
+
+                      
+
+                      
+                      
+                    </div>
+                    <div class="card-footer text-right">
+                      <button class="btn btn-primary">valider</button>
+                    </div>
+                  </form>
+                </div>
+              
+                    
+                  </form>
                 </div>
               </div>
             </div>
@@ -204,15 +214,6 @@
   <script src="{{url_for('static',filename = 'assets/js/app.min.js')}}"></script>
   <!-- JS Libraies -->
   <!-- Page Specific JS File -->
-  <script src="{{url_for('static',filename = 'assets/bundles/datatables/datatables.min.js')}}"></script>
-  <script src="{{url_for('static',filename = 'assets/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js')}}"></script>
-  <script src="{{url_for('static',filename = 'assets/bundles/datatables/export-tables/dataTables.buttons.min.js')}}"></script>
-  <script src="{{url_for('static',filename = 'assets/bundles/datatables/export-tables/buttons.flash.min.js')}}"></script>
-  <script src="{{url_for('static',filename = 'assets/bundles/datatables/export-tables/jszip.min.js')}}"></script>
-  <script src="{{url_for('static',filename = 'assets/bundles/datatables/export-tables/pdfmake.min.js')}}"></script>
-  <script src="{{url_for('static',filename = 'assets/bundles/datatables/export-tables/vfs_fonts.js')}}"></script>
-  <script src="{{url_for('static',filename = 'assets/bundles/datatables/export-tables/buttons.print.min.js')}}"></script>
-  <script src="{{url_for('static',filename = 'assets/js/page/datatables.js')}}"></script>
   <!-- Template JS File -->
   <script src="{{url_for('static',filename = 'assets/js/scripts.js')}}"></script>
   <!-- Custom JS File -->
@@ -220,5 +221,5 @@
 </body>
 
 
-<!-- export-table.html  21 Nov 2019 03:56:01 GMT -->
+<!-- forms-validation.html  21 Nov 2019 03:55:16 GMT -->
 </html>

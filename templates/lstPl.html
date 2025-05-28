@@ -43,7 +43,7 @@
               <div class="col-12">
                 <div class="card">
                   <div class="card-header">
-                    <h4>Liste des utilisateurs</h4>
+                    <h4>Liste des Pasteurs</h4>
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
@@ -76,15 +76,9 @@
                               <td>{{i[8]}}</td>
                               <td>{{i[9]}}</td>
                               <td>
-                                <a href="/updateU/{{i[0]}}" class="btn btn-primary">Modifier</a>
-                                <!-- seulement administrateur centrale -->
-                                 {% if session['id'] ==  2 %}
-                                <a href="/statutU/{{i[0]}}" class="btn btn-success">statut</a> 
-                                <a href="/deleteU/{{i[0]}}"  class="btn btn-danger">Supprimer</a> 
-                                {% elif session['id'] ==  1 %}
                                 
-                                <a href="/deleteU/{{i[0]}}"  class="btn btn-danger">Supprimer</a> 
-                                {% endif %}
+                                <a href="" class="btn btn-primary">Modifier</a> 
+                               
                                 
                               </td>
                             </tr>

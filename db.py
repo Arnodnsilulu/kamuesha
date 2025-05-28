@@ -75,5 +75,8 @@ db.execute("""
             foreign key(userID) references users(idUser),
             foreign key(fonctionP) references fonctions(idFonction))
  """)
-# db.execute('alter table users add id integer')
+# db.execute('alter table users add id integer') 
+
+#demo 
+db.execute("create table if not exists demo(idD integer primary key autoincrement , nom varchar(20), email varchar(40))")
 db.commit()
