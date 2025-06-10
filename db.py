@@ -25,13 +25,12 @@ db.execute("""
 # creation de la table user
 #
 #
-# db.execute('drop table users')
+#db.execute('drop table users')
 db.execute("""
-             create table if not exists users(
+            create table if not exists users(
             idUser integer primary key autoincrement, 
             nomUser varchar(30),
             prenomUser varchar(30),
-            sexeUser varchar(15),
             phoneUser varchar(15) , 
             fonctionUser integer ,
             adresseUser varchar(80),
@@ -43,8 +42,11 @@ db.execute("""
            foreign key(fonctionUser) references fonctions(idFonction) 
              ) 
 """)
-
-
+# db.execute("alter table users drop sexeUser") 
+# db.execute("alter table users drop villeUser") 
+# db.execute("alter table users add postnom varchar(30)") 
+# db.execute("alter table users add etatCivile varchar(30)") 
+#db.execute("alter table users add commune varchar(30)") 
 
 #information par defaut 
 #
@@ -56,22 +58,25 @@ db.execute("""
 #
 ## creation de la table personnels 
 #
-#db.execute('drop table personnels')
+#db.execute('drop table pasteurs')
 db.execute("""
-            create table if not exists personnels(
-            idPersonnel integer primary key autoincrement ,
+            create table if not exists pasteurs(
+            idP integer primary key autoincrement ,
             nomP varchar(30),
             prenomP varchar(40),
-            sexeP varchar(15),
+            formation char(3),
+            etatCivile varchar(20),
             phoneP varchar(15) , 
-            fonctionP integer ,
+            emailP varchar(50),
+            nomEgise varchar(40),
+            district varchar(40),
+            commune varchar(30),
+            quartier varchar(40),
             adresseP varchar(80),
-            villeP varchar(30) , 
-            pasteurID integer ,
+            fonctionP integer , 
             userID integer , 
             photoP longtext , 
-            dateDebut date , 
-            foreign key(pasteurID) references users(idUser),
+            dateR timestamp default current_timestamp , 
             foreign key(userID) references users(idUser),
             foreign key(fonctionP) references fonctions(idFonction))
  """)

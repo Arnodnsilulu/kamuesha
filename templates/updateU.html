@@ -60,26 +60,32 @@
                       </div>
 
                       <div class="form-group">
+                        <label>Postnom</label>
+                        <input type="text" class="form-control" name="postnom" value="{{aff[10]}}" required>
+                      </div>
+
+                      <div class="form-group">
                         <label>Prenom</label>
                         <input type="text" class="form-control" name="prenom" value="{{aff[2]}}" required>
                       </div>
 
                       <div class="form-group">
-                        <label>sexe ({{aff[3]}})</label>
-                        <select name="sexe" id="" class="form-control"> 
-                          <option value="M">Masculin</option>
-                          <option value="F">Feminin</option>
+                        <label>etat-civil ({{aff[9]}})</label>
+                        <select name="etat" id="" class="form-control"> 
+                          <option value="Marie">Marie</option>
+                          <option value="celibataire">celibataire</option>
+                          <option value="veuf">veuf</option>
 
                         </select>
                       </div>
 
                       <div class="form-group">
                         <label>telephone</label>
-                        <input type="number" class="form-control" value="{{aff[4]}}" name="phone" required>
+                        <input type="number" class="form-control" value="{{aff[3]}}" name="phone" required>
                       </div>
 
                       <div class="form-group">
-                        <label>fonction ({{aff[5]}})</label>
+                        <label>fonction ({{aff[4]}})</label>
                         <select name="fonction" id="" class="form-control text-capitalize"> 
                           {% for i in dataAff %}
                           <option value="{{i[0]}}">{{i[1]}}</option>
@@ -88,18 +94,21 @@
                       </div>
 
                       <div class="form-group">
-                        <label>ville</label>
-                        <input type="text" class="form-control" name="ville" value="{{aff[6]}}" required>
+                        <label>commune {{aff[11]}}</label>
+                        <select name="commune" class="form-control" id="">
+                          <option value="Lemba">Lemba</option>
+                          <option value="Limete">Limete</option>
+                        </select>
                       </div>
 
                       <div class="form-group">
                         <label>adresse</label>
-                        <input type="text" class="form-control" name="adresse" value="{{aff[7]}}" required>
+                        <input type="text" class="form-control" name="adresse" value="{{aff[5]}}" required>
                       </div>
 
                       <div class="form-group">
                         <label>Nom eglise</label>
-                        <input type="text" class="form-control" name="eglise" value="{{aff[8]}}" required>
+                        <input type="text" class="form-control" name="eglise" value="{{aff[6]}}" required>
                       </div>
 
                       

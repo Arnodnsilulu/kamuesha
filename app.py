@@ -50,7 +50,7 @@ def login():
                     session['session'] = True 
                     session['id']  = dta[0]
                     session['nom'] = dta[1]
-                    session['fonction'] = dta[5]
+                    session['fonction'] = dta[4]
                     session['eglise']  = dta[8]
                     session['ville']  = dta[7]
 
@@ -103,12 +103,13 @@ def registerU():
         if request.method == 'POST':
             nom = request.form['nom']
             prenom  = request.form['prenom']
-            sexe = request.form['sexe']
+            etat = request.form['etat']
             phone = str(request.form['phone'])
             fonction = request.form['fonction']
-            ville = request.form['ville']
+            commune = request.form['commune']
             adresse = request.form['adresse']
             eglise = request.form['eglise']
+            postnom = request.form['postnom']
             password = 1234
 
             with sqlite3.connect('crmk.db') as con :
@@ -123,14 +124,14 @@ def registerU():
                     #envoie des informations
                     # 
                     cur = con.cursor()
-                    cur.execute("insert into users(nomUser,prenomUser,sexeUser,phoneUser,fonctionUser,villeUser,adresseUser,nomEglise,passwordUser) values(?,?,?,?,?,?,?,?,?)" ,[nom,prenom,sexe,phone,fonction,ville,adresse,eglise,password])
+                    cur.execute("insert into users(nomUser,prenomUser,phoneUser,fonctionUser,adresseUser,nomEglise,passwordUser,etatcivile,postnom,commune) values(?,?,?,?,?,?,?,?,?,?)" ,[nom,prenom,phone,fonction,adresse,eglise,password,etat,postnom,commune])
                     con.commit()
                     cur.close()
                     flash("Information enregistree")    
         # call table fonction
         with sqlite3.connect('crmk.db') as con :
             cur = con.cursor()
-            cur.execute("select * from fonctions where idFonction not in (1,4,5)")
+            cur.execute("select * from fonctions where idFonction not in (1,2,4,5)")
             aff = cur.fetchall()
 
         return render_template('forms-validation.html', aff = aff)
@@ -145,7 +146,7 @@ def lstUser():
         #liste des utilisateurs systeme
         with sqlite3.connect("crmk.db") as con :
             cur = con.cursor()
-            cur.execute("select idUser,nomUser,prenomUser,sexeUser,phoneUser,libFonction,villeUser,adresseUser,nomEglise,statut , fonctionUser from users inner join fonctions on users.fonctionUser = fonctions.idFonction where fonctionUser in (2,3) ") 
+            cur.execute("select idUser,nomUser,prenomUser,phoneUser,libFonction,adresseUser,nomEglise,statut , fonctionUser , etatCivile,postnom , commune from users inner join fonctions on users.fonctionUser = fonctions.idFonction where fonctionUser in (2,3) ") 
             dataA = cur.fetchall()
 
         return render_template('export-table.html' , dataA = dataA)
@@ -170,16 +171,19 @@ def updateU(idUser):
         if request.method == 'POST':
             nom = request.form['nom']
             prenom  = request.form['prenom']
-            sexe = request.form['sexe']
+            
             phone = str(request.form['phone'])
             fonction = request.form['fonction']
-            ville = request.form['ville']
+            
             adresse = request.form['adresse']
             eglise = request.form['eglise']
+            postnom = request.form['postnom']
+            commune = request.form['commune']
+            etat = request.form['etat']
 
             with sqlite3.connect('crmk.db') as con :
                 cur = con.cursor()
-                cur.execute("update  users set nomUser = ?,prenomUser = ?,sexeUser = ?,phoneUser = ?,fonctionUser = ?,villeUser = ?,adresseUser = ?,nomEglise = ? where idUser = ? " ,[nom,prenom,sexe,phone,fonction,ville,adresse,eglise,idUser] )
+                cur.execute("update  users set nomUser = ?,prenomUser = ?,phoneUser = ?,fonctionUser = ?,adresseUser = ?,nomEglise = ? ,postnom = ?, etatcivile = ? , commune = ? where idUser = ? " ,[nom,prenom,phone,fonction,adresse,eglise,postnom,etat,commune,idUser] )
 
                 con.commit()
 
@@ -189,7 +193,7 @@ def updateU(idUser):
 
         with sqlite3.connect('crmk.db') as con:
             cur = con.cursor()
-            cur.execute("select idUser,nomUser,prenomUser,sexeUser,phoneUser,libFonction,villeUser,adresseUser,nomEglise,statut , fonctionUser from users inner join fonctions on users.fonctionUser = fonctions.idFonction  where idUser = ?",[idUser])
+            cur.execute("select idUser,nomUser,prenomUser,phoneUser,libFonction,adresseUser,nomEglise,statut , fonctionUser ,etatcivile,postnom,commune from users inner join fonctions on users.fonctionUser = fonctions.idFonction  where idUser = ?",[idUser])
             aff = cur.fetchone()
 
             #
