@@ -1,7 +1,7 @@
 from flask import Flask , session , render_template ,request, redirect,flash
 import sqlite3
 import os 
-#import qrcode 
+import qrcode 
 
 
 
@@ -13,6 +13,7 @@ import os
 app = Flask(__name__)
 app.secret_key="application_de_la_gestionEglise" 
 app.config['UPLOAD_QRCODE'] = 'static/qrcode' 
+app.config['UPLOAD_PASTEUR'] = 'static/pasteurs' 
 
 
 
@@ -233,24 +234,34 @@ def pasteurR():
         if request.method == 'POST':
             nom = request.form['nom']
             prenom = request.form['prenom']
-            sexe = request.form['sexe']
+            postnom = request.form['postnom']
             adresse = request.form['adresse']
             phone = str(request.form['phone'] )
-            ville = session['ville']
-            pwd = 0000 
+            commune = request.form['commune']
+            etat = request.form['etat']
+            formation = request.form['formation']
+            email = request.form['email']
+            photo = request.files['photo']
+            # information ancien pasteur
+
+            nomAP = request.form['nomAP']
+            formationA = request.form['formationA']
+            ad = request.form['ad']
+            provinceA = request.form['provinceA']
+            pays = request.form['pays']
 
             
             with sqlite3.connect("crmk.db") as con :
                 #verification du phone 
                 ver = con.cursor()
-                ver.execute("select * from users where phoneUser = ?", [phone])
+                ver.execute("select * from pasteurs where phoneP = ?", [phone])
                 dataV = ver.fetchone()
 
                 if dataV:
                     flash("le numero existe deja dans le systeme") 
                 else:
                     cur = con.cursor()
-                    cur.execute("insert into users(nomUser,prenomUser,sexeUser,villeUser,adresseUser,nomEglise,passwordUser,id,fonctionUser,phoneUser) values(?,?,?,?,?,?,?,?,?,?)" ,[nom,prenom,sexe,ville,adresse,session['eglise'],pwd,session['id'],4,phone]) 
+                    cur.execute("insert into pasteurs(nomP,postnomP,prenomP,formation,etatcvile,phoneP,emailP,nomEgise,commune,fonctionP,userID,photoP,nomAncienP,nomAncienEg,pasteurAncienFormation,nomAncienAdresse,nomProvince,nomAncienPays) values(?,?,?)" ,[]) 
                     con.commit()
                     cur.close()
                     flash("information enregistre")

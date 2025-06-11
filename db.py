@@ -80,12 +80,21 @@ db.execute("""
             foreign key(userID) references users(idUser),
             foreign key(fonctionP) references fonctions(idFonction))
  """)
-# db.execute('alter table users add nomAncienP varchar(40)') 
-# db.execute('alter table users add nomAncienEg varchar(30)') 
-# db.execute('alter table users add pasteurAncienFormation char(30)') 
-# db.execute('alter table users add nomAncienAdresse varchar(30)')
-# db.execute('alter table users add nomProvince varchar(30)') 
-# db.execute('alter table users add nomAncienPays varchar(30)')  
+# db.execute('alter table pasteurs add postnomP varchar(40)')
+# db.execute('alter table pasteurs add nomAncienP varchar(40)') 
+# db.execute('alter table pasteurs add nomAncienEg varchar(30)') 
+# db.execute('alter table pasteurs add pasteurAncienFormation char(30)') 
+# db.execute('alter table pasteurs add nomAncienAdresse varchar(30)')
+# db.execute('alter table pasteurs add nomProvince varchar(30)') 
+# db.execute('alter table pasteurs add nomAncienPays varchar(30)')  
+db.execute('alter table pasteurs add qrcode longtext') 
+
+# db.execute('alter table users drop nomAncienP ') 
+# db.execute('alter table users drop nomAncienEg ') 
+# db.execute('alter table users drop pasteurAncienFormatin') 
+# db.execute('alter table users drop nomAncienAdresse ')
+# db.execute('alter table users drop nomProvince ') 
+# db.execute('alter table users drop nomAncienPays ')
 
 #demo 
 db.execute("create table if not exists demo(idD integer primary key autoincrement , nom varchar(20), email varchar(40))")
