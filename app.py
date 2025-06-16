@@ -37,7 +37,7 @@ def login():
         user = request.form['user'] 
         pwd  = request.form['pwd'] 
 
-        with sqlite3.connect('crmk.crmk') as con :
+        with sqlite3.connect('crmk.db') as con :
             cur = con.cursor()
             cur.execute("select * from users where nomUser = ? and passwordUser = ? ",[user , pwd])
             data = cur.fetchone()
@@ -73,7 +73,7 @@ def login():
 @app.route("/index")
 def index():
     if 'session' in session:
-        with sqlite3.connect("crmk.crmk") as con :
+        with sqlite3.connect("crmk.db") as con :
 
             # nombre des utilisateurs dans le systme cote admin et sous-admin
             nbrU = con.cursor()
@@ -115,7 +115,7 @@ def registerU():
             postnom = request.form['postnom']
             password = 1234
 
-            with sqlite3.connect('crmk.crmk') as con :
+            with sqlite3.connect('crmk.db') as con :
                 #verification du numero de telephone
                 num = con.cursor()
                 num.execute("select * from users where phoneUser = ?", [phone])
@@ -132,7 +132,7 @@ def registerU():
                     cur.close()
                     flash("Information enregistree")    
         # call table fonction
-        with sqlite3.connect('crmk.crmk') as con :
+        with sqlite3.connect('crmk.db') as con :
             cur = con.cursor()
             cur.execute("select * from fonctions where idFonction not in (1,2,4,5)")
             aff = cur.fetchall()
@@ -147,7 +147,7 @@ def registerU():
 def lstUser():
     if 'session' in session:
         #liste des utilisateurs systeme
-        with sqlite3.connect("crmk.crmk") as con :
+        with sqlite3.connect("crmk.db") as con :
             cur = con.cursor()
             cur.execute("select idUser,nomUser,prenomUser,phoneUser,libFonction,adresseUser,nomEglise,statut , fonctionUser , etatCivile,postnom , commune from users inner join fonctions on users.fonctionUser = fonctions.idFonction where fonctionUser in (2,3) ") 
             dataA = cur.fetchall()
@@ -158,7 +158,7 @@ def lstUser():
 # supprimer users 
 @app.route('/deleteU/<string:idUser>',methods = ['POST','GET'])
 def deleteU(idUser):
-    with sqlite3.connect('crmk.crmk') as con:
+    with sqlite3.connect('crmk.db') as con:
         cur = con.cursor()
         cur.execute("delete from users where idUser = ?",[idUser])
         con.commit()
@@ -184,7 +184,7 @@ def updateU(idUser):
             commune = request.form['commune']
             etat = request.form['etat']
 
-            with sqlite3.connect('crmk.crmk') as con :
+            with sqlite3.connect('crmk.db') as con :
                 cur = con.cursor()
                 cur.execute("update  users set nomUser = ?,prenomUser = ?,phoneUser = ?,fonctionUser = ?,adresseUser = ?,nomEglise = ? ,postnom = ?, etatcivile = ? , commune = ? where idUser = ? " ,[nom,prenom,phone,fonction,adresse,eglise,postnom,etat,commune,idUser] )
 
@@ -194,7 +194,7 @@ def updateU(idUser):
 
 
 
-        with sqlite3.connect('crmk.crmk') as con:
+        with sqlite3.connect('crmk.db') as con:
             cur = con.cursor()
             cur.execute("select idUser,nomUser,prenomUser,phoneUser,libFonction,adresseUser,nomEglise,statut , fonctionUser ,etatcivile,postnom,commune from users inner join fonctions on users.fonctionUser = fonctions.idFonction  where idUser = ?",[idUser])
             aff = cur.fetchone()
@@ -217,7 +217,7 @@ def statutU(idUser):
     if 'session' in session :
         if request.method == 'POST':
             statut = request.form['statut'] 
-            with sqlite3.connect("crmk.crmk") as con :
+            with sqlite3.connect("crmk.db") as con :
                 cur = con.cursor()
                 cur.execute("update users set statut = ? where idUser = ?",[statut,idUser]) 
                 con.commit()
@@ -292,7 +292,7 @@ def pasteurR():
 
 
             
-            with sqlite3.connect("crmk.crmk") as con :
+            with sqlite3.connect("crmk.db") as con :
                 #verification du phone 
                 ver = con.cursor()
                 ver.execute("select * from pasteurs where phoneP = ?", [phone])
@@ -318,7 +318,7 @@ def pasteurR():
 # 
 @app.route('/lstP')
 def lstP():
-    with sqlite3.connect("crmk.crmk") as con :
+    with sqlite3.connect("crmk.db") as con :
         cur = con.cursor()
         cur.execute("select * from pasteurs where userID = ?",[session['id']]) 
         dataA = cur.fetchall()
@@ -329,7 +329,7 @@ def lstP():
 # suppresion de pasteur 
 @app.route('/deleteP/<string:idUser>', methods = ['POST','GET'])
 def deleteP(idUser) :
-    with sqlite3.connect('crmk.crmk') as con :
+    with sqlite3.connect('crmk.db') as con :
         cur = con.cursor()
         cur.execute("delete from users where idUser = ?", [idUser])
         con.commit()
@@ -348,7 +348,7 @@ def change():
             pwd2 = request.form['pwd2']
             pwd3 = request.form['pwd3']
 
-            with sqlite3.connect("crmk.crmk") as con :
+            with sqlite3.connect("crmk.db") as con :
                 ver = con.cursor()
                 ver.execute("select * from users where idUser = ? and passwordUser = ? ",[session['id'],pwd1])
                 dataVer = ver.fetchone()
@@ -387,14 +387,14 @@ def updateP(idUser):
                 phone = str(request.form['phone'] )
                 ville = session['ville']
 
-                with sqlite3.connect('crmk.crmk') as con :
+                with sqlite3.connect('crmk.db') as con :
                     cur = con.cursor()
                     cur.execute("update users set nomUser = ? , prenomUser = ? ,sexeUser = ? , phoneUser = ? , adresseUser = ? where idUser = ?",[nom,prenom,sexe,phone,adresse,idUser]) 
                     con.commit()
                     cur.close()
                     return redirect('/lstP')
 
-        with sqlite3.connect('crmk.crmk') as con :
+        with sqlite3.connect('crmk.db') as con :
             
 
             cur = con.cursor()
@@ -422,7 +422,7 @@ def addP(idP):
             
             
 
-            with sqlite3.connect("crmk.crmk") as con :
+            with sqlite3.connect("crmk.db") as con :
 
                 cur = con.cursor()
                 cur.execute("insert into ministres(nomM,prenomM,idUser,idPasteur,dateD,preche,formation) values(?,?,?,?,?,?,?)",[nom,prenom,session['id'],idP,dateD,preche,formation])
@@ -458,7 +458,7 @@ def lstPl():
     if 'session' in session :
         ##
         # 
-        with sqlite3.connect("crmk.crmk") as con :
+        with sqlite3.connect("crmk.db") as con :
             cur = con.cursor()
             cur.execute("select * from ministres where idUser = ?" , [session['id']]) 
             dataA = cur.fetchall()
@@ -474,23 +474,26 @@ def lstPl():
 @app.route('/mdfM/<string:idM>', methods = ['POST','GET'])
 def mdfM(idM):
     if 'session' in session:
-        if request.method == "POST":
+        if request.method == 'POST':
             nom = request.form['nom']
             prenom = request.form['prenom']
-            preche = request.form['preche']
-            formation = request.form['formation']
-            datedebut = request.form['dt']
+            preche = request.form['preche'] 
+            formation = request.form['formation'] 
+            dt = request.form['dt'] 
 
-            with sqlite3.connect('cmrk.crmk') as con:
+            with sqlite3.connect('crmk.db') as con :
                 cur = con.cursor()
-                cur.execute('update ministres set nomM=?, prenomM=?, preche=?, formation=?, dateD=? where idM=?',[nom,prenom,preche,formation,datedebut,idM])
+                cur.execute("update ministres set nomM = ?,prenomM = ?,dateD = ?,preche = ?,formation = ? where idM = ?",[nom,prenom,dt,preche,formation,idM]) 
                 con.commit()
-
                 return redirect('/lstPl')
 
+       
 
 
-        with sqlite3.connect('crmk.crmk') as con:
+
+
+        with sqlite3.connect('crmk.db') as con:
+
             cur = con.cursor()
             cur.execute("select * from ministres where idM=?",[idM])
 
@@ -510,7 +513,7 @@ def mdfM(idM):
 
 @app.route('/deleteM/<string:idM>', methods = ['POST','GET'])
 def deleteM(idM) :
-    with sqlite3.connect('crmk.crmk') as con :
+    with sqlite3.connect('crmk.db') as con :
         cur = con.cursor()
         cur.execute("delete from ministres where idM = ?", [idM])
         con.commit()
