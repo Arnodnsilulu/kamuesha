@@ -51,15 +51,12 @@
                         <thead>
                           <tr>
                             <th>Nom</th>
-                            <th>Prenom</th>
-                            <th>sexe</th>
-                            <th>phone</th>
-                            <th>Fonction</th>
-                            <th>ville</th>
-                            <th>adresse</th>
-                            <th>eglise</th>
-                            <th>statut</th>
-                            <th>traitement</th>
+                            <th>Prenom</th> 
+                            <th>il a deja preche</th>
+                            <th>formation</th>
+                            <th>date debut</th>
+                            <th>traitements</th>
+                            
                           </tr>
                         </thead>
 
@@ -68,18 +65,12 @@
                             <tr>
                               <td>{{i[1]}}</td>
                               <td>{{i[2]}}</td>
-                              <td>{{i[3]}}</td>
-                              <td>{{i[4]}}</td>
-                              <td>{{i[5]}}</td>
                               <td>{{i[6]}}</td>
                               <td>{{i[7]}}</td>
-                              <td>{{i[8]}}</td>
-                              <td>{{i[9]}}</td>
+                              <td>{{i[5]}}</td>
                               <td>
-                                
-                                <a href="" class="btn btn-primary">Modifier</a> 
-                               
-                                
+                                <a href="/mdfM/{{i[0]}}" class="btn btn-primary">Modifier</a> 
+                                <a href="/deleteM/{{i[0]}}" class="btn btn-outline-danger">supprimer</a>     
                               </td>
                             </tr>
                           {% endfor %}

@@ -2,6 +2,8 @@ from flask import Flask , session , render_template ,request, redirect,flash
 import sqlite3
 import os 
 import qrcode 
+import io 
+import pyqrcode 
 
 
 
@@ -35,7 +37,7 @@ def login():
         user = request.form['user'] 
         pwd  = request.form['pwd'] 
 
-        with sqlite3.connect('crmk.db') as con :
+        with sqlite3.connect('crmk.crmk') as con :
             cur = con.cursor()
             cur.execute("select * from users where nomUser = ? and passwordUser = ? ",[user , pwd])
             data = cur.fetchone()
@@ -71,7 +73,7 @@ def login():
 @app.route("/index")
 def index():
     if 'session' in session:
-        with sqlite3.connect("crmk.db") as con :
+        with sqlite3.connect("crmk.crmk") as con :
 
             # nombre des utilisateurs dans le systme cote admin et sous-admin
             nbrU = con.cursor()
@@ -113,7 +115,7 @@ def registerU():
             postnom = request.form['postnom']
             password = 1234
 
-            with sqlite3.connect('crmk.db') as con :
+            with sqlite3.connect('crmk.crmk') as con :
                 #verification du numero de telephone
                 num = con.cursor()
                 num.execute("select * from users where phoneUser = ?", [phone])
@@ -130,7 +132,7 @@ def registerU():
                     cur.close()
                     flash("Information enregistree")    
         # call table fonction
-        with sqlite3.connect('crmk.db') as con :
+        with sqlite3.connect('crmk.crmk') as con :
             cur = con.cursor()
             cur.execute("select * from fonctions where idFonction not in (1,2,4,5)")
             aff = cur.fetchall()
@@ -145,7 +147,7 @@ def registerU():
 def lstUser():
     if 'session' in session:
         #liste des utilisateurs systeme
-        with sqlite3.connect("crmk.db") as con :
+        with sqlite3.connect("crmk.crmk") as con :
             cur = con.cursor()
             cur.execute("select idUser,nomUser,prenomUser,phoneUser,libFonction,adresseUser,nomEglise,statut , fonctionUser , etatCivile,postnom , commune from users inner join fonctions on users.fonctionUser = fonctions.idFonction where fonctionUser in (2,3) ") 
             dataA = cur.fetchall()
@@ -156,7 +158,7 @@ def lstUser():
 # supprimer users 
 @app.route('/deleteU/<string:idUser>',methods = ['POST','GET'])
 def deleteU(idUser):
-    with sqlite3.connect('crmk.db') as con:
+    with sqlite3.connect('crmk.crmk') as con:
         cur = con.cursor()
         cur.execute("delete from users where idUser = ?",[idUser])
         con.commit()
@@ -182,7 +184,7 @@ def updateU(idUser):
             commune = request.form['commune']
             etat = request.form['etat']
 
-            with sqlite3.connect('crmk.db') as con :
+            with sqlite3.connect('crmk.crmk') as con :
                 cur = con.cursor()
                 cur.execute("update  users set nomUser = ?,prenomUser = ?,phoneUser = ?,fonctionUser = ?,adresseUser = ?,nomEglise = ? ,postnom = ?, etatcivile = ? , commune = ? where idUser = ? " ,[nom,prenom,phone,fonction,adresse,eglise,postnom,etat,commune,idUser] )
 
@@ -192,7 +194,7 @@ def updateU(idUser):
 
 
 
-        with sqlite3.connect('crmk.db') as con:
+        with sqlite3.connect('crmk.crmk') as con:
             cur = con.cursor()
             cur.execute("select idUser,nomUser,prenomUser,phoneUser,libFonction,adresseUser,nomEglise,statut , fonctionUser ,etatcivile,postnom,commune from users inner join fonctions on users.fonctionUser = fonctions.idFonction  where idUser = ?",[idUser])
             aff = cur.fetchone()
@@ -215,7 +217,7 @@ def statutU(idUser):
     if 'session' in session :
         if request.method == 'POST':
             statut = request.form['statut'] 
-            with sqlite3.connect("crmk.db") as con :
+            with sqlite3.connect("crmk.crmk") as con :
                 cur = con.cursor()
                 cur.execute("update users set statut = ? where idUser = ?",[statut,idUser]) 
                 con.commit()
@@ -242,6 +244,7 @@ def pasteurR():
             formation = request.form['formation']
             email = request.form['email']
             photo = request.files['photo']
+            eglise = request.form['eglise']
             # information ancien pasteur
 
             nomAP = request.form['nomAP']
@@ -249,9 +252,47 @@ def pasteurR():
             ad = request.form['ad']
             provinceA = request.form['provinceA']
             pays = request.form['pays']
+            
+
+            #photo pasteur
+            tofe = os.path.join(app.config['UPLOAD_PASTEUR'],photo.filename) 
+            photo.save(tofe) 
+
+
+            #code qr
+
+            link = "crmk-rdc.onrender.com" 
+            qr = qrcode.QRCode(version=1,error_correction = qrcode.constants.ERROR_CORRECT_H,box_size = 10 , border =4) 
+            qr.add_data(link) 
+            qr.make(fit= True)
+
+            img = qr.make_image(fill_color="black", back_color="white") 
+            img.save(f"{nom}.png")
+            # image = os.path.join(app.config['UPLOAD_QRCODE'],img) 
+            # image.save(image)
+            
+            # tofe = os.path.join(app.config['UPLOAD_QRCODE'],img) 
+            # gener.save(tofe)
+
+
+
+            #qrcode 
+            # link = "crmk-rdc.onrender.com" 
+            # genere = pyqrcode.create(link) 
+            # genere.svg(f"{nom}.svg", scale = 8) 
+
+            # save = os.path.join(app.config['UPLOAD_QRCODE'],genere) 
+            # qrcode.save(save) 
+            
+
+            #qrcode 
+
+           
+
+
 
             
-            with sqlite3.connect("crmk.db") as con :
+            with sqlite3.connect("crmk.crmk") as con :
                 #verification du phone 
                 ver = con.cursor()
                 ver.execute("select * from pasteurs where phoneP = ?", [phone])
@@ -260,8 +301,9 @@ def pasteurR():
                 if dataV:
                     flash("le numero existe deja dans le systeme") 
                 else:
+                    
                     cur = con.cursor()
-                    cur.execute("insert into pasteurs(nomP,postnomP,prenomP,formation,etatcvile,phoneP,emailP,nomEgise,commune,fonctionP,userID,photoP,nomAncienP,nomAncienEg,pasteurAncienFormation,nomAncienAdresse,nomProvince,nomAncienPays) values(?,?,?)" ,[]) 
+                    cur.execute("insert into pasteurs(nomP,postnomP,prenomP,formation,etatcivile,phoneP,emailP,nomEgise,commune,fonctionP,userID,photoP,nomAncienP,pasteurAncienFormation,nomProvince,nomAncienPays,adresseP) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" ,[nom,postnom,prenom,formation,etat,phone,email,eglise,commune,4,session['id'],photo.filename,nomAP,formationA,provinceA,pays,adresse])   
                     con.commit()
                     cur.close()
                     flash("information enregistre")
@@ -276,9 +318,9 @@ def pasteurR():
 # 
 @app.route('/lstP')
 def lstP():
-    with sqlite3.connect("crmk.db") as con :
+    with sqlite3.connect("crmk.crmk") as con :
         cur = con.cursor()
-        cur.execute("select idUser,nomUser,prenomUser,sexeUser,phoneUser,libFonction,villeUser,adresseUser,nomEglise,statut , fonctionUser from users inner join fonctions on users.fonctionUser = fonctions.idFonction where id = ?",[session['id']])
+        cur.execute("select * from pasteurs where userID = ?",[session['id']]) 
         dataA = cur.fetchall()
 
         return render_template('lstP.html', dataA = dataA)
@@ -287,7 +329,7 @@ def lstP():
 # suppresion de pasteur 
 @app.route('/deleteP/<string:idUser>', methods = ['POST','GET'])
 def deleteP(idUser) :
-    with sqlite3.connect('crmk.db') as con :
+    with sqlite3.connect('crmk.crmk') as con :
         cur = con.cursor()
         cur.execute("delete from users where idUser = ?", [idUser])
         con.commit()
@@ -306,7 +348,7 @@ def change():
             pwd2 = request.form['pwd2']
             pwd3 = request.form['pwd3']
 
-            with sqlite3.connect("crmk.db") as con :
+            with sqlite3.connect("crmk.crmk") as con :
                 ver = con.cursor()
                 ver.execute("select * from users where idUser = ? and passwordUser = ? ",[session['id'],pwd1])
                 dataVer = ver.fetchone()
@@ -345,14 +387,14 @@ def updateP(idUser):
                 phone = str(request.form['phone'] )
                 ville = session['ville']
 
-                with sqlite3.connect('crmk.db') as con :
+                with sqlite3.connect('crmk.crmk') as con :
                     cur = con.cursor()
                     cur.execute("update users set nomUser = ? , prenomUser = ? ,sexeUser = ? , phoneUser = ? , adresseUser = ? where idUser = ?",[nom,prenom,sexe,phone,adresse,idUser]) 
                     con.commit()
                     cur.close()
                     return redirect('/lstP')
 
-        with sqlite3.connect('crmk.db') as con :
+        with sqlite3.connect('crmk.crmk') as con :
             
 
             cur = con.cursor()
@@ -368,36 +410,41 @@ def updateP(idUser):
 #
 # ajout du personnel 
 #
-@app.route('/addP/<string:idUser>', methods = ['POST','GET'])
-def addP(idUser):
+@app.route('/addP/<string:idP>', methods = ['POST','GET'])
+def addP(idP):
     if 'session' in session:
         if request.method == 'POST':
             nom = request.form['nom']
-            prenom = request.form['prenom']
-            sexe = request.form['sexe']
-            phone = str(request.form['phone'])
-            adresse = request.form['adresse']
-            ville = session['ville']
-            fonction = 5 
-            pasteur = idUser 
-            user = session['id'] 
-            dte = request.form['dte'] 
+            prenom = request.form['prenom'] 
+            preche = request.form['preche']
+            formation = request.form['formation'] 
+            dateD = request.form['dt']
+            
+            
 
-            with sqlite3.connect("crmk.db") as con :
-                #veririfcation du doublon cote numero 
-                ver = con.cursor()
-                ver.execute("select * from personnels where phoneP = ? ",[phone])
-                data = ver.fetchone()
+            with sqlite3.connect("crmk.crmk") as con :
 
-                if data :
-                    flash("le numero existe deja dans le systeme ")
-                else:
-                    cur = con.cursor()
-                    cur.execute("insert into personnels(nomP,prenomP,sexeP,phoneP,fonctionP,adresseP,villeP,pasteurID,userID,dateDebut) values(?,?,?,?,?,?,?,?,?,?)",[nom,prenom,sexe,phone,fonction,adresse,ville,pasteur,user,dte])
-                    con.commit()
-                    cur.close()
+                cur = con.cursor()
+                cur.execute("insert into ministres(nomM,prenomM,idUser,idPasteur,dateD,preche,formation) values(?,?,?,?,?,?,?)",[nom,prenom,session['id'],idP,dateD,preche,formation])
+                con.commit()
+                cur.close()
 
-                    flash("information enregistre ")    
+                flash("information enregistre ")
+
+                # #veririfcation du doublon cote numero 
+                # ver = con.cursor()
+                # ver.execute("select * from pasteurs where phoneP = ? ",[phone])
+                # data = ver.fetchone()
+
+                # if data :
+                #     flash("le numero existe deja dans le systeme ")
+                # else:
+                #     cur = con.cursor()
+                #     cur.execute("insert into pateurs() values()",[])
+                #     con.commit()
+                #     cur.close()
+
+                #     flash("information enregistre ")    
 
         return render_template('addPersonnel.html') 
     else:
@@ -411,15 +458,64 @@ def lstPl():
     if 'session' in session :
         ##
         # 
-        with sqlite3.connect("crmk.db") as con :
+        with sqlite3.connect("crmk.crmk") as con :
             cur = con.cursor()
-            cur.execute("select * from personnels where userID = ?" , [session['id']]) 
+            cur.execute("select * from ministres where idUser = ?" , [session['id']]) 
             dataA = cur.fetchall()
 
 
             return render_template('lstPl.html', dataA = dataA)
     else:
         return redirect('/login') 
+
+#
+#
+# modification du ministre 
+@app.route('/mdfM/<string:idM>', methods = ['POST','GET'])
+def mdfM(idM):
+    if 'session' in session:
+        if request.method == "POST":
+            nom = request.form['nom']
+            prenom = request.form['prenom']
+            preche = request.form['preche']
+            formation = request.form['formation']
+            datedebut = request.form['dt']
+
+            with sqlite3.connect('cmrk.crmk') as con:
+                cur = con.cursor()
+                cur.execute('update ministres set nomM=?, prenomM=?, preche=?, formation=?, dateD=? where idM=?',[nom,prenom,preche,formation,datedebut,idM])
+                con.commit()
+
+                return redirect('/lstPl')
+
+
+
+        with sqlite3.connect('crmk.crmk') as con:
+            cur = con.cursor()
+            cur.execute("select * from ministres where idM=?",[idM])
+
+            data = cur.fetchone()
+
+            return render_template('mdfM.html', data = data)
+    else:
+        return redirect('/login')
+
+
+ #
+ #
+ ## suppression du ministre 
+ #
+ #
+
+
+@app.route('/deleteM/<string:idM>', methods = ['POST','GET'])
+def deleteM(idM) :
+    with sqlite3.connect('crmk.crmk') as con :
+        cur = con.cursor()
+        cur.execute("delete from ministres where idM = ?", [idM])
+        con.commit()
+        return redirect('/lstPl') 
+
 
 #
 # 

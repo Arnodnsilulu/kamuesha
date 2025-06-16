@@ -1,7 +1,8 @@
 import sqlite3 
 
 
-db = sqlite3.connect("crmk.db")
+# db = sqlite3.connect("crmk.db")
+db = sqlite3.connect("db.db")
 
 ## 
 # creation de la table fonction
@@ -18,7 +19,7 @@ db.execute("""
 # information par defaut 
 #
 # 
-#db.execute("insert into fonctions(libFonction) values('super administrateur'), ('administrateur'), ('sous-administrateur'),('pasteur') ,('ministre')")
+db.execute("insert into fonctions(libFonction) values('super administrateur'), ('administrateur'), ('sous-administrateur'),('pasteur') ,('ministre')")
 
 ##
 #
@@ -87,7 +88,7 @@ db.execute("""
 # db.execute('alter table pasteurs add nomAncienAdresse varchar(30)')
 # db.execute('alter table pasteurs add nomProvince varchar(30)') 
 # db.execute('alter table pasteurs add nomAncienPays varchar(30)')  
-db.execute('alter table pasteurs add qrcode longtext') 
+# db.execute('alter table pasteurs add qrcode longtext') 
 
 # db.execute('alter table users drop nomAncienP ') 
 # db.execute('alter table users drop nomAncienEg ') 
@@ -95,6 +96,28 @@ db.execute('alter table pasteurs add qrcode longtext')
 # db.execute('alter table users drop nomAncienAdresse ')
 # db.execute('alter table users drop nomProvince ') 
 # db.execute('alter table users drop nomAncienPays ')
+
+#
+# creation de la table ministre 
+#
+# 
+# db.execute("drop table ministres")
+db.execute("""
+            create table if not exists ministres(
+            idM integer primary key autoincrement ,
+            nomM varchar(40),
+            prenomM varchar(40),
+            idUser integer , 
+            idPasteur integer , 
+            dateD date,
+            foreign key(idUser) references users(idUser) on delete no action on update no action,
+            foreign key(idPasteur) references pasteurs(idP) on delete no action on update no action
+             )
+
+""")
+
+# db.execute('alter table ministres add preche char(3) ') 
+# db.execute('alter table ministres add formation char(3) ')
 
 #demo 
 db.execute("create table if not exists demo(idD integer primary key autoincrement , nom varchar(20), email varchar(40))")

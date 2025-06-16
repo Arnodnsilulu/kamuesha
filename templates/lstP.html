@@ -49,32 +49,43 @@
                     <div class="table-responsive">
                       <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
                         <thead>
-                          <tr>
+                          <tr class="text-capitalize">
                             <th>Nom</th>
+                            <th>Postnom</th>
                             <th>Prenom</th>
-                            <th>sexe</th>
+                            <th>formation</th>
+                            <th>Etat-civil</th>
                             <th>phone</th>
-                            <th>Fonction</th>
-                            <th>ville</th>
-                            <th>adresse</th>
+                            <th>email</th>
                             <th>eglise</th>
-                            <th>statut</th>
+                            <th>commune</th>
+                            <th>adresse</th>
+                            <th>pasteur</th>
+                            <th>adresse</th>
+                            <th>province</th>
+                            <th>pays</th>
                             <th>traitement</th>
                           </tr>
                         </thead>
 
                         <tbody>
                           {% for i in dataA %}
-                            <tr>
+                            <tr class="text-capitalize">
                               <td>{{i[1]}}</td>
+                              <td>{{i[22]}}</td>
                               <td>{{i[2]}}</td>
                               <td>{{i[3]}}</td>
                               <td>{{i[4]}}</td>
                               <td>{{i[5]}}</td>
                               <td>{{i[6]}}</td>
                               <td>{{i[7]}}</td>
-                              <td>{{i[8]}}</td>
                               <td>{{i[9]}}</td>
+                              <td>{{i[11]}}</td>
+                              <td>{{i[16]}}</td>
+                              <td>{{i[19]}}</td>
+                              <td>{{i[20]}}</td>
+                              <td>{{i[21]}}</td>
+
                               <td>
                                 <a href="/addP/{{i[0]}}" class="btn btn-success">Ajout</a>
                                 <a href="/updateP/{{i[0]}}" class="btn btn-primary">Modifier</a>

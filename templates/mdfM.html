@@ -50,23 +50,23 @@
                   <form method="post" action="">
 
                     <div class="card-header">
-                      <h4>Formulaire Ministre</h4>
+                      <h4>Formulaire de modification Ministre</h4>
                     </div>
                     <div class="card-body">
                       
                       <div class="form-group">
                         <label>Nom</label>
-                        <input type="text" class="form-control" name="nom" required>
+                        <input type="text" class="form-control" name="nom" value="{{data[1]}}" required>
                       </div>
 
                       <div class="form-group">
                         <label>Prenom</label>
-                        <input type="text" class="form-control" name="prenom" required>
+                        <input type="text" class="form-control" name="prenom" value="{{data[2]}}" required>
                       </div>
 
                       <div class="form-group">
                         <label>preche</label>
-                        <select name="preche" id="" class="form-control"> 
+                        <select name="preche" id="" value="{{data[6]}}" class="form-control"> 
                           <option value="oui">Oui</option>
                           <option value="non">Non</option>
 
@@ -75,7 +75,7 @@
 
                       <div class="form-group">
                         <label>formation</label>
-                        <select name="formation" id="" class="form-control"> 
+                        <select name="formation" id="" value="{{data[7]}}" class="form-control"> 
                           <option value="oui">Oui</option>
                           <option value="non">Non</option>
 
@@ -84,7 +84,7 @@
 
                       <div class="form-group">
                         <label>date debut</label>
-                        <input type="date" class="form-control" name="dt" required>
+                        <input type="date" class="form-control" value="{{data[5]}}" name="dt" required>
                       </div>
 
                       <!-- <div class="form-group">
