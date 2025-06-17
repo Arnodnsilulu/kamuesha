@@ -572,6 +572,20 @@ def mdfMA(idM):
     else:
         return redirect('/login')       
 
+#
+#
+# liste des pasteurs code admin
+@app.route('/lstPA')
+def lstPA():
+    if 'session' in session:
+        with sqlite3.connect("crmk.db") as con :
+            cur = con.cursor()
+            cur.execute("select pasteurs.* , users.*  from pasteurs inner join users on pasteurs.userID = users.idUser") 
+            data = cur.fetchall()
+
+        return render_template("lstPA.html" , data = data) 
+    else:
+        return redirect('/login')
 
 
 #
