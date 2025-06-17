@@ -519,6 +519,60 @@ def deleteM(idM) :
         con.commit()
         return redirect('/lstPl') 
 
+#
+#
+# liste de ministre par admini 
+@app.route('/lstMPA')
+def lstMPA():
+    if 'session' in session:
+        with sqlite3.connect("crmk.db") as con :
+            cur = con.cursor()
+            cur.execute("select nomM, prenomM, preche,m.formation ,dateD, nomP, prenomP, nomegise, nomUser , nomEglise, idM from ministres as m inner join pasteurs as p on  m.idPasteur = p.idP  inner join users on m.idUser = users.idUser") 
+            data = cur.fetchall() 
+
+
+        return render_template('lstMPA.html' , data  = data)
+    else:
+        return redirect('/login')
+
+
+#
+# #
+# modification du ministre cote admin 
+# 
+@app.route('/mdfMA/<string:idM>',methods = ['GET','POST']) 
+def mdfMA(idM):
+    if 'session' in session:
+        if request.method == 'POST':
+            nom = request.form['nom']
+            prenom = request.form['prenom']
+            preche = request.form['preche'] 
+            formation = request.form['formation'] 
+            dt = request.form['dt'] 
+
+            with sqlite3.connect('crmk.db') as con :
+                cur = con.cursor()
+                cur.execute("update ministres set nomM = ?,prenomM = ?,dateD = ?,preche = ?,formation = ? where idM = ?",[nom,prenom,dt,preche,formation,idM]) 
+                con.commit()
+                return redirect('/lstMPA')
+
+       
+
+
+
+
+        with sqlite3.connect('crmk.db') as con:
+
+            cur = con.cursor()
+            cur.execute("select * from ministres where idM=?",[idM])
+
+            data = cur.fetchone()
+
+            return render_template('mdfMA.html', data = data)
+    else:
+        return redirect('/login')       
+
+
 
 #
 # 
