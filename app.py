@@ -4,6 +4,7 @@ import os
 import qrcode 
 import io 
 import pyqrcode 
+import webview 
 
 
 
@@ -82,7 +83,7 @@ def index():
 
             # nombre des pasteurs dans le systme cote admin et sous-admin
             nbrP = con.cursor()
-            nbrP.execute("select * from users where fonctionUser in (4)")
+            nbrP.execute("select * from pasteurs")
             affNbrP = len(nbrP.fetchall())
 
         return render_template('index.html', affNbr = affNbr , affNbrP = affNbrP)
@@ -252,6 +253,8 @@ def pasteurR():
             ad = request.form['ad']
             provinceA = request.form['provinceA']
             pays = request.form['pays']
+            egliseA = request.form['egliseA']
+            phoneA = str(request.form['phoneA'])
             
 
             #photo pasteur
@@ -261,31 +264,29 @@ def pasteurR():
 
             #code qr
 
-            link = "crmk-rdc.onrender.com" 
-            qr = qrcode.QRCode(version=1,error_correction = qrcode.constants.ERROR_CORRECT_H,box_size = 10 , border =4) 
-            qr.add_data(link) 
-            qr.make(fit= True)
-
-            img = qr.make_image(fill_color="black", back_color="white") 
-            img.save(f"{nom}.png")
-            # image = os.path.join(app.config['UPLOAD_QRCODE'],img) 
-            # image.save(image)
-            
-            # tofe = os.path.join(app.config['UPLOAD_QRCODE'],img) 
-            # gener.save(tofe)
-
-
-
-            #qrcode 
             # link = "crmk-rdc.onrender.com" 
-            # genere = pyqrcode.create(link) 
-            # genere.svg(f"{nom}.svg", scale = 8) 
+            # qr = qrcode.QRCode(version=1,error_correction = qrcode.constants.ERROR_CORRECT_H,box_size = 10 , border =4) 
+            # qr.add_data(link) 
+            # qr.make(fit= True)
 
-            # save = os.path.join(app.config['UPLOAD_QRCODE'],genere) 
-            # qrcode.save(save) 
-            
+            # img = qr.make_image(fill_color="black", back_color="white") 
+            # img.save(f"{nom}.png")
 
-            #qrcode 
+
+            #autre methode 
+
+            folder = os.path.join('static' , 'qrcode') 
+            os.makedirs(folder, exist_ok = True)
+
+            filenames = f"{nom}.png"
+            fileFolder = os.path.join(folder,filenames) 
+
+            if not os.path.exists(fileFolder):
+                image = qrcode.make("crmk-rdc.onrender.com")
+                image.save(fileFolder)
+                # images = image
+
+ 
 
            
 
@@ -303,7 +304,7 @@ def pasteurR():
                 else:
                     
                     cur = con.cursor()
-                    cur.execute("insert into pasteurs(nomP,postnomP,prenomP,formation,etatcivile,phoneP,emailP,nomEgise,commune,fonctionP,userID,photoP,nomAncienP,pasteurAncienFormation,nomProvince,nomAncienPays,adresseP) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" ,[nom,postnom,prenom,formation,etat,phone,email,eglise,commune,4,session['id'],photo.filename,nomAP,formationA,provinceA,pays,adresse])   
+                    cur.execute("insert into pasteurs(nomP,postnomP,prenomP,formation,etatcivile,phoneP,emailP,nomEgise,commune,fonctionP,userID,photoP,nomAncienP,pasteurAncienFormation,nomProvince,nomAncienPays,adresseP , nomAncienEg,MonpasteurPhone,qrcode,nomAncienAdresse) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" ,[nom,postnom,prenom,formation,etat,phone,email,eglise,commune,4,session['id'],photo.filename,nomAP,formationA,provinceA,pays,adresse,egliseA, phoneA,filenames , ad ])   
                     con.commit()
                     cur.close()
                     flash("information enregistre")
@@ -327,13 +328,24 @@ def lstP():
 ##
 # #
 # suppresion de pasteur 
-@app.route('/deleteP/<string:idUser>', methods = ['POST','GET'])
-def deleteP(idUser) :
+@app.route('/deleteP/<string:idP>', methods = ['POST','GET'])
+def deleteP(idP) :
     with sqlite3.connect('crmk.db') as con :
         cur = con.cursor()
-        cur.execute("delete from users where idUser = ?", [idUser])
+        cur.execute("delete from pasteurs where idP = ?", [idP])
         con.commit()
         return redirect('/lstP')   
+    
+##
+# #
+# suppresion de pasteur cote admin 
+@app.route('/deletePA/<string:idP>', methods = ['POST','GET'])
+def deletePA(idP) :
+    with sqlite3.connect('crmk.db') as con :
+        cur = con.cursor()
+        cur.execute("delete from pasteurs where idP = ?", [idP])
+        con.commit()
+        return redirect('/lstPA') 
 #
 # 
 # 
@@ -374,37 +386,51 @@ def change():
 # modification cote pasteur  
 #
 #
-@app.route("/updateP/<string:idUser>", methods = ['POST','GET'])
-def updateP(idUser):
+@app.route("/updateP/<string:idP>", methods = ['POST','GET'])
+def updateP(idP):
     if 'session' in session:
         if request.method == 'POST':
-                
-                
-                nom = request.form['nom']
-                prenom = request.form['prenom']
-                sexe = request.form['sexe']
-                adresse = request.form['adresse']
-                phone = str(request.form['phone'] )
-                ville = session['ville']
+            nom = request.form['nom'] 
+            postnom = request.form['postnom']
+            prenom = request.form['prenom']
+            adresse = request.form['adresse']
+            phone = str(request.form['phone'] )
+            commune = request.form['commune']
+            etat = request.form['etat']
+            formation = request.form['formation']
+            email = request.form['email']
+            # photo = request.files['photo']
+            eglise = request.form['eglise']
+            # information ancien pasteur
 
-                with sqlite3.connect('crmk.db') as con :
-                    cur = con.cursor()
-                    cur.execute("update users set nomUser = ? , prenomUser = ? ,sexeUser = ? , phoneUser = ? , adresseUser = ? where idUser = ?",[nom,prenom,sexe,phone,adresse,idUser]) 
-                    con.commit()
-                    cur.close()
-                    return redirect('/lstP')
+            nomAP = request.form['nomAP']
+            formationA = request.form['formationA']
+            ad = request.form['ad']
+            provinceA = request.form['provinceA']
+            pays = request.form['pays']
+            phoneA = str(request.form['phoneA']) 
+            egliseA = request.form['egliseA']
+
+            #send data 
+            # 
+            # 
+            with sqlite3.connect("crmk.db") as con :
+                cur = con.cursor()
+                cur.execute("""
+                                update pasteurs set nomP = ? , postnomP = ? , formation = ? , prenomP=?,etatCivile = ? ,phoneP = ? , emailP = ?, nomEgise = ? , commune =? , adresseP = ? , nomAncienP = ? ,pasteurAncienFormation = ? , nomAncienEg = ?  , nomAncienAdresse = ? , nomProvince = ? , nomAncienPays = ? , MonpasteurPhone = ? where idP = ?
+                 """, [nom,postnom,formation,prenom,etat,phone,email , eglise, commune,adresse , nomAP,formationA , egliseA , ad , provinceA , pays , phoneA , idP]) 
+                con.commit()
+                return redirect('/lstP')
+            
+        # liste de la table pasteurs
 
         with sqlite3.connect('crmk.db') as con :
-            
-
             cur = con.cursor()
-            cur.execute("select * from users where idUser = ?",[idUser])
+            cur.execute("select * from pasteurs where idP = ?", [idP]) 
             data = cur.fetchone()
 
+        return render_template("updateP.html", data = data )       
 
-        return render_template('updateP.html', data = data) 
-    else:
-        return redirect('/login') 
 
 #
 #
@@ -586,6 +612,55 @@ def lstPA():
         return render_template("lstPA.html" , data = data) 
     else:
         return redirect('/login')
+#
+# 
+# moficiation des informations dans la table pasteurs par l'admin 
+# 
+@app.route('/updatePA/<string:idP>', methods = ['POST','GET']) 
+def updatePA(idP) :
+    if 'session' in session:
+        if request.method == 'POST':
+
+            nom = request.form['nom'] 
+            postnom = request.form['postnom']
+            prenom = request.form['prenom']
+            adresse = request.form['adresse']
+            phone = str(request.form['phone'] )
+            commune = request.form['commune']
+            etat = request.form['etat']
+            formation = request.form['formation']
+            email = request.form['email']
+            # photo = request.files['photo']
+            eglise = request.form['eglise']
+            # information ancien pasteur
+
+            nomAP = request.form['nomAP']
+            formationA = request.form['formationA']
+            ad = request.form['ad']
+            provinceA = request.form['provinceA']
+            pays = request.form['pays']
+            phoneA = str(request.form['phoneA']) 
+            egliseA = request.form['egliseA']
+
+            #send data 
+            # 
+            # 
+            with sqlite3.connect("crmk.db") as con :
+                cur = con.cursor()
+                cur.execute("""
+                                update pasteurs set nomP = ? , postnomP = ? , formation = ? , prenomP=?,etatCivile = ? ,phoneP = ? , emailP = ?, nomEgise = ? , commune =? , adresseP = ? , nomAncienP = ? ,pasteurAncienFormation = ? , nomAncienEg = ?  , nomAncienAdresse = ? , nomProvince = ? , nomAncienPays = ? , MonpasteurPhone = ? where idP = ?
+                 """, [nom,postnom,formation,prenom,etat,phone,email , eglise, commune,adresse , nomAP,formationA , egliseA , ad , provinceA , pays , phoneA , idP]) 
+                con.commit()
+                return redirect('/lstPA')
+            
+        # liste de la table pasteurs
+
+        with sqlite3.connect('crmk.db') as con :
+            cur = con.cursor()
+            cur.execute("select * from pasteurs where idP = ?", [idP]) 
+            data = cur.fetchone()
+
+        return render_template("updatePA.html", data = data )       
 
 
 #
@@ -595,5 +670,8 @@ def lstPA():
 def demo():
     return render_template('demo.html') 
 
+webview.create_window('apk' , app)    
+
 if __name__ == '__main__':
     app.run(debug=True)
+    # webview.start() 

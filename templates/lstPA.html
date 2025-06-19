@@ -60,10 +60,17 @@
                             <th>eglise</th>
                             <th>commune</th>
                             <th>adresse</th>
-                            <th>pasteur</th>
+
+                            <th>mon pasteur</th>
                             <th>adresse</th>
                             <th>province</th>
                             <th>pays</th>
+                            <th>phone ancien mon pasteur</th>
+
+                            <th>photo</th>
+                            <th>qrcode</th>
+
+                            <th>nom sous admin</th>
                             <th>traitement</th>
                           </tr>
                         </thead>
@@ -85,11 +92,25 @@
                               <td>{{i[19]}}</td>
                               <td>{{i[20]}}</td>
                               <td>{{i[21]}}</td>
+                              <td>{{i[24]}}</td>
+                              <td>
+                                <a href="static/pasteurs/{{i[14]}}" target="_blank ">
+                                  <img src="static/pasteurs/{{i[14]}}" alt="" width="50">
+                                </a>
+                              </td>
+
+                              <td>
+                                <a href="static/qrcode/{{i[23]}}" target="_blank">
+                                  <img src="static/qrcode/{{i[23]}}" alt="" width="50"> 
+                                </a>
+                              </td>
+
+                              <td>{{i[26]}}</td>
 
                               <td>
                                 
-                                <a href="/updateP/{{i[0]}}" class="btn btn-primary">Modifier</a>
-                                <a href="/deleteP/{{i[0]}}"  class="btn btn-danger">Supprimer</a>
+                                <a href="/updatePA/{{i[0]}}" class="btn btn-primary">Modifier</a>
+                                <a href="/deletePA/{{i[0]}}"  class="btn btn-danger">Supprimer</a>
                                 <!-- seulement administrateur centrale -->
                                  
                                 

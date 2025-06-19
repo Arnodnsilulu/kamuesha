@@ -2,7 +2,7 @@ import sqlite3
 
 
 db = sqlite3.connect("crmk.db")
-db = sqlite3.connect("db.db")
+# db = sqlite3.connect("db.db")
 
 ## 
 # creation de la table fonction
@@ -19,7 +19,7 @@ db.execute("""
 # information par defaut 
 #
 # 
-db.execute("insert into fonctions(libFonction) values('super administrateur'), ('administrateur'), ('sous-administrateur'),('pasteur') ,('ministre')")
+# db.execute("insert into fonctions(libFonction) values('super administrateur'), ('administrateur'), ('sous-administrateur'),('pasteur') ,('ministre')")
 
 ##
 #
@@ -44,22 +44,22 @@ db.execute("""
              ) 
 """)
 # db.execute("alter table users drop sexeUser") 
-db.execute("alter table users drop villeUser") 
-db.execute("alter table users add postnom varchar(30)") 
-db.execute("alter table users add etatCivile varchar(30)") 
-db.execute("alter table users add commune varchar(30)") 
+# db.execute("alter table users drop villeUser") 
+# db.execute("alter table users add postnom varchar(30)") 
+# db.execute("alter table users add etatCivile varchar(30)") 
+# db.execute("alter table users add commune varchar(30)") 
 
 #information par defaut 
 #
 # db.execute("insert into users(nomUser,prenomUser,sexeUser,fonctionUser,nomEglise,passwordUser) values('mukoko','gracia','M',1,'super','12345')")
-db.execute("insert into users(nomUser,prenomUser,fonctionUser,nomEglise,passwordUser) values('admin','admin',2,'demo','12345')")
+#db.execute("insert into users(nomUser,prenomUser,fonctionUser,nomEglise,passwordUser) values('admin','admin',2,'demo','12345')")
 #db.execute("insert into users(nomUser,prenomUser,sexeUser,fonctionUser,nomEglise,passwordUser,statut) values('gala','admin','M',2,'demo','12345','non')")
 
 ##
 #
 ## creation de la table personnels 
 #
-#db.execute('drop table pasteurs')
+# db.execute('drop table pasteurs')
 db.execute("""
             create table if not exists pasteurs(
             idP integer primary key autoincrement ,
@@ -70,32 +70,29 @@ db.execute("""
             phoneP varchar(15) , 
             emailP varchar(50),
             nomEgise varchar(40),
-            district varchar(40),
-            commune varchar(30),
-            quartier varchar(40),
+            district_territoire varchar(40),
+            commune_secteur varchar(30),
+            quartier_village varchar(40),
             adresseP varchar(80),
             fonctionP integer , 
             userID integer , 
             photoP longtext , 
             dateR timestamp default current_timestamp , 
-            foreign key(userID) references users(idUser),
-            foreign key(fonctionP) references fonctions(idFonction))
+            foreign key(userID) references users(idUser) on delete no action on update no action,
+            foreign key(fonctionP) references fonctions(idFonction) on delete no action on update no action )
  """)
-db.execute('alter table pasteurs add postnomP varchar(40)')
+
 db.execute('alter table pasteurs add nomAncienP varchar(40)') 
 db.execute('alter table pasteurs add nomAncienEg varchar(30)') 
 db.execute('alter table pasteurs add pasteurAncienFormation char(30)') 
 db.execute('alter table pasteurs add nomAncienAdresse varchar(30)')
 db.execute('alter table pasteurs add nomProvince varchar(30)') 
-db.execute('alter table pasteurs add nomAncienPays varchar(30)')  
+db.execute('alter table pasteurs add nomAncienPays varchar(30)') 
+db.execute('alter table pasteurs add postnomP varchar(40)') 
 db.execute('alter table pasteurs add qrcode longtext') 
+db.execute('alter table pasteurs add MonpasteurPhone varchar(15)')
 
-# db.execute('alter table users drop nomAncienP ') 
-# db.execute('alter table users drop nomAncienEg ') 
-# db.execute('alter table users drop pasteurAncienFormatin') 
-# db.execute('alter table users drop nomAncienAdresse ')
-# db.execute('alter table users drop nomProvince ') 
-# db.execute('alter table users drop nomAncienPays ')
+
 
 #
 # creation de la table ministre 
@@ -116,8 +113,8 @@ db.execute("""
 
 """)
 
-db.execute('alter table ministres add preche char(3) ') 
-db.execute('alter table ministres add formation char(3) ')
+# db.execute('alter table ministres add preche char(3) ') 
+# db.execute('alter table ministres add formation char(3) ')
 
 #demo 
 db.execute("create table if not exists demo(idD integer primary key autoincrement , nom varchar(20), email varchar(40))")
