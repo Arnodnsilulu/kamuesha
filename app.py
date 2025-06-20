@@ -447,13 +447,14 @@ def addP(idP):
             preche = request.form['preche']
             formation = request.form['formation'] 
             dateD = request.form['dt']
+            phone = str(request.form['phone'])
             
             
 
             with sqlite3.connect("crmk.db") as con :
 
                 cur = con.cursor()
-                cur.execute("insert into ministres(nomM,prenomM,idUser,idPasteur,dateD,preche,formation) values(?,?,?,?,?,?,?)",[nom,prenom,session['id'],idP,dateD,preche,formation])
+                cur.execute("insert into ministres(nomM,prenomM,idUser,idPasteur,dateD,preche,formation,phoneM) values(?,?,?,?,?,?,?,?)",[nom,prenom,session['id'],idP,dateD,preche,formation,phone])
                 con.commit()
                 cur.close()
 
@@ -474,7 +475,7 @@ def lstPl():
         # 
         with sqlite3.connect("crmk.db") as con :
             cur = con.cursor()
-            cur.execute("select * from ministres where idUser = ?" , [session['id']]) 
+            cur.execute("select ministres.*,pasteurs.* from ministres inner join pasteurs on ministres.idPasteur = pasteurs.idP where idUser = ?" , [session['id']]) 
             dataA = cur.fetchall()
 
 
@@ -494,10 +495,11 @@ def mdfM(idM):
             preche = request.form['preche'] 
             formation = request.form['formation'] 
             dt = request.form['dt'] 
+            phone = str(request.form['phone']) 
 
             with sqlite3.connect('crmk.db') as con :
                 cur = con.cursor()
-                cur.execute("update ministres set nomM = ?,prenomM = ?,dateD = ?,preche = ?,formation = ? where idM = ?",[nom,prenom,dt,preche,formation,idM]) 
+                cur.execute("update ministres set nomM = ?,prenomM = ?,dateD = ?,preche = ?,formation = ? , phoneM = ? where idM = ?",[nom,prenom,dt,preche,formation,phone,idM]) 
                 con.commit()
                 return redirect('/lstPl')
 
@@ -541,7 +543,7 @@ def lstMPA():
     if 'session' in session:
         with sqlite3.connect("crmk.db") as con :
             cur = con.cursor()
-            cur.execute("select nomM, prenomM, preche,m.formation ,dateD, nomP, prenomP, nomegise, nomUser , nomEglise, idM from ministres as m inner join pasteurs as p on  m.idPasteur = p.idP  inner join users on m.idUser = users.idUser") 
+            cur.execute("select nomM, prenomM, preche,m.formation ,dateD, nomP, prenomP, nomegise, nomUser , nomEglise, idM , phoneM from ministres as m inner join pasteurs as p on  m.idPasteur = p.idP  inner join users on m.idUser = users.idUser") 
             data = cur.fetchall() 
 
 
@@ -563,10 +565,11 @@ def mdfMA(idM):
             preche = request.form['preche'] 
             formation = request.form['formation'] 
             dt = request.form['dt'] 
+            phone = str(request.form['phone'])
 
             with sqlite3.connect('crmk.db') as con :
                 cur = con.cursor()
-                cur.execute("update ministres set nomM = ?,prenomM = ?,dateD = ?,preche = ?,formation = ? where idM = ?",[nom,prenom,dt,preche,formation,idM]) 
+                cur.execute("update ministres set nomM = ?,prenomM = ?,dateD = ?,preche = ?,formation = ? , phoneM = ? where idM = ?",[nom,prenom,dt,preche,formation,phone,idM]) 
                 con.commit()
                 return redirect('/lstMPA')
 

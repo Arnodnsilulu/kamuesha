@@ -115,6 +115,7 @@ db.execute("""
 
 # db.execute('alter table ministres add preche char(3) ') 
 # db.execute('alter table ministres add formation char(3) ')
+# db.execute('alter table ministres add phoneM varchar(15) ')
 
 #demo 
 db.execute("create table if not exists demo(idD integer primary key autoincrement , nom varchar(20), email varchar(40))")
