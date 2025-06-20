@@ -419,8 +419,8 @@ def updateP(idP):
             with sqlite3.connect("crmk.db") as con :
                 cur = con.cursor()
                 cur.execute("""
-                                update pasteurs set nomP = ? , postnomP = ? , formation = ? , prenomP=?,etatCivile = ? ,phoneP = ? , emailP = ?, nomEgise = ? , commune =? , adresseP = ? , nomAncienP = ? ,pasteurAncienFormation = ? , nomAncienEg = ?  , nomAncienAdresse = ? , nomProvince = ? , nomAncienPays = ? , MonpasteurPhone = ? where idP = ?
-                 """, [nom,postnom,formation,prenom,etat,phone,email , eglise, commune,adresse , nomAP,formationA , egliseA , ad , provinceA , pays , phoneA , idP]) 
+                                update pasteurs set nomP = ? , postnomP = ? , formation = ? , prenomP=?,etatCivile = ? ,phoneP = ? , emailP = ?, nomEgise = ? , commune_secteur =? , adresseP = ? , nomAncienP = ? ,pasteurAncienFormation = ? , nomAncienEg = ?  , nomAncienAdresse = ? , nomProvince = ? , nomAncienPays = ? , MonpasteurPhone = ? , quartier_village = ?  , paysP = ? , district_territoire = ? where idP = ?
+                 """, [nom,postnom,formation,prenom,etat,phone,email , eglise, commune,adresse , nomAP,formationA , egliseA , ad , provinceA , pays , phoneA , quartier,paysP,district,idP]) 
                 con.commit()
                 return redirect('/lstP')
             
@@ -458,21 +458,7 @@ def addP(idP):
                 cur.close()
 
                 flash("information enregistre ")
-
-                # #veririfcation du doublon cote numero 
-                # ver = con.cursor()
-                # ver.execute("select * from pasteurs where phoneP = ? ",[phone])
-                # data = ver.fetchone()
-
-                # if data :
-                #     flash("le numero existe deja dans le systeme ")
-                # else:
-                #     cur = con.cursor()
-                #     cur.execute("insert into pateurs() values()",[])
-                #     con.commit()
-                #     cur.close()
-
-                #     flash("information enregistre ")    
+    
 
         return render_template('addPersonnel.html') 
     else:
@@ -634,6 +620,12 @@ def updatePA(idP) :
             email = request.form['email']
             # photo = request.files['photo']
             eglise = request.form['eglise']
+
+            #information ajoute
+            district = request.form['district']
+            paysP    = request.form['paysP']
+            quartier = request.form['quartier'] 
+
             # information ancien pasteur
 
             nomAP = request.form['nomAP']
@@ -650,8 +642,8 @@ def updatePA(idP) :
             with sqlite3.connect("crmk.db") as con :
                 cur = con.cursor()
                 cur.execute("""
-                                update pasteurs set nomP = ? , postnomP = ? , formation = ? , prenomP=?,etatCivile = ? ,phoneP = ? , emailP = ?, nomEgise = ? , commune =? , adresseP = ? , nomAncienP = ? ,pasteurAncienFormation = ? , nomAncienEg = ?  , nomAncienAdresse = ? , nomProvince = ? , nomAncienPays = ? , MonpasteurPhone = ? where idP = ?
-                 """, [nom,postnom,formation,prenom,etat,phone,email , eglise, commune,adresse , nomAP,formationA , egliseA , ad , provinceA , pays , phoneA , idP]) 
+                                update pasteurs set nomP = ? , postnomP = ? , formation = ? , prenomP=?,etatCivile = ? ,phoneP = ? , emailP = ?, nomEgise = ? , commune_secteur =? , adresseP = ? , nomAncienP = ? ,pasteurAncienFormation = ? , nomAncienEg = ?  , nomAncienAdresse = ? , nomProvince = ? , nomAncienPays = ? , MonpasteurPhone = ? ,district_territoire =? , quartier_village = ? , paysP = ? where idP = ?
+                 """, [nom,postnom,formation,prenom,etat,phone,email , eglise, commune,adresse , nomAP,formationA , egliseA , ad , provinceA , pays , phoneA ,district,quartier,paysP ,idP]) 
                 con.commit()
                 return redirect('/lstPA')
             

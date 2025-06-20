@@ -99,34 +99,8 @@
                       </div>
 
                       <div class="form-group">
-                        <label>commune <span class="text-warning">{{data[9]}}</span></label>
-                        <select name="commune" id="" class="form-control"> 
-                          <option value="Lemba">Lemba</option>
-                          <option value="Masina">Masina</option>
-                          <option value="Limete">Limete</option>
-                          <option value="kinshasa">kinshasa</option>
-                          <option value="n'djili">n'djili</option>
-                          <option value="makala">makala</option>
-                          <option value="ngaba">ngaba</option>
-                          <option value="kalamu">kalamu</option>
-                          <option value="bumbu">bumbu</option>
-                          <option value="lingwala">lingwala</option>
-                          <option value="barumbu">barumbu</option>
-                          <option value="kinseso">kinseso</option>
-                          <option value="selembao">selembao</option>
-                          <option value="kimbanseke">kimbanseke</option>
-                          <option value="n'sele">n'sele</option>
-                          <option value="matete">matete</option>
-                          <option value="kasa-vubu">kasa-vubu</option>
-                          <option value="kintambo">kintambo</option>
-                          <option value="maluku">maluku</option>
-                          <option value="ngaliema">ngaliema</option>
-                          <option value="ngiri-ngiri">ngiri-ngiri</option>
-                          <option value="mont-ngafula">mont-ngafula</option>
-                          <option value="bandale">bandale</option>
-                          <option value="gombe">gombe</option>
-
-                        </select>
+                        <label>commune/secteur <span class="text-warning">{{data[9]}}</span></label>
+                        <input type="text" required name="commune" class="form-control" >
                       </div>
 
                       <!--  -->
@@ -170,18 +144,33 @@
                       
 
                       <div class="form-group">
-                        <label>province ancien pasteur <span class="text-warning">{{data[20]}}</span></label>
+                        <label>province mon pasteur <span class="text-warning">{{data[20]}}</span></label>
                         <input type="text" value="{{data[20]}}" class="form-control" name="provinceA" required>
                       </div>
 
                       <div class="form-group">
-                        <label>Pays ancien pasteur <span class="text-warning">{{data[21]}}</span></label>
+                        <label>Pays mon pasteur <span class="text-warning">{{data[21]}}</span></label>
                         <input type="text" class="form-control" value="{{data[21]}}" name="pays" required>
                       </div>
 
                       <div class="form-group">
-                        <label>Phone ancien pasteur <span class="text-warning">{{data[24]}}</span></label>
+                        <label>Phone mon pasteur <span class="text-warning">{{data[24]}}</span></label>
                         <input type="text" class="form-control" value="{{data[24]}}" name="phoneA" required>
+                      </div>
+
+                      <div class="form-group">
+                        <label>pays  <span class="text-warning">{{data[25]}}</span></label>
+                        <input type="text" class="form-control" value="{{data[25]}}" name="paysP" required>
+                      </div>
+
+                      <div class="form-group">
+                        <label>quartier/village  <span class="text-warning">{{data[10]}}</span></label>
+                        <input type="text" class="form-control" value="{{data[10]}}" name="quartier" required>
+                      </div>
+
+                      <div class="form-group">
+                        <label>district/territoire  <span class="text-warning">{{data[8]}}</span></label>
+                        <input type="text" class="form-control" value="{{data[8]}}" name="district" required>
                       </div>
 
                       
