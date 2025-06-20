@@ -87,7 +87,12 @@ def index():
             nbrP.execute("select * from pasteurs")
             affNbrP = len(nbrP.fetchall())
 
-        return render_template('index.html', affNbr = affNbr , affNbrP = affNbrP)
+            # nombre des ministres dans le systme cote admin et sous-admin
+            nbrM = con.cursor()
+            nbrM.execute("select * from pasteurs")
+            affNbrM = len(nbrM.fetchall())
+
+        return render_template('index.html', affNbr = affNbr , affNbrP = affNbrP , affNbrM = affNbrM)
     else:
         return redirect('/login')
     
@@ -658,14 +663,18 @@ def updatePA(idP) :
             data = cur.fetchone()
 
         return render_template("updatePA.html", data = data )       
-
-
 #
-# 
-# demo qrcode 
-@app.route('/demo',methods =['POST','GET']) 
-def demo():
-    return render_template('demo.html') 
+#liste de  ministre par pasteurs
+@app.route("/lstMPP/<string:idM>" , methods =['GET'])
+def lstMPP(idM):
+    if 'session' in session:
+        with sqlite3.connect("crmk.db") as con :
+            cur = con.cursor()
+            cur.execute("select ministres.*,pasteurs.* from ministres inner join pasteurs on ministres.idPasteur = pasteurs.idP where idPasteur =?" , [idM]) 
+            dataA = cur.fetchall()
+            return render_template('lstMPP.html' , dataA = dataA)
+    else:
+        return redirect('/login')
 
 webview.create_window('apk' , app)    
 
