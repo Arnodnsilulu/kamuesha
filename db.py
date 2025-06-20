@@ -91,7 +91,7 @@ db.execute("""
 # db.execute('alter table pasteurs add postnomP varchar(40)') 
 # db.execute('alter table pasteurs add qrcode longtext') 
 # db.execute('alter table pasteurs add MonpasteurPhone varchar(15)')
-db.execute('alter table pasteurs add paysP varchar(30)')
+# db.execute('alter table pasteurs add paysP varchar(30)')
 
 
 #

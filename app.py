@@ -5,6 +5,7 @@ import qrcode
 import io 
 import pyqrcode 
 import webview 
+from datetime import datetime, timedelta
 
 
 
@@ -246,6 +247,11 @@ def pasteurR():
             email = request.form['email']
             photo = request.files['photo']
             eglise = request.form['eglise']
+
+            #information ajoute
+            district = request.form['district']
+            paysP    = request.form['paysP']
+            quartier = request.form['quartier'] 
             # information ancien pasteur
 
             nomAP = request.form['nomAP']
@@ -260,18 +266,6 @@ def pasteurR():
             #photo pasteur
             tofe = os.path.join(app.config['UPLOAD_PASTEUR'],photo.filename) 
             photo.save(tofe) 
-
-
-            #code qr
-
-            # link = "crmk-rdc.onrender.com" 
-            # qr = qrcode.QRCode(version=1,error_correction = qrcode.constants.ERROR_CORRECT_H,box_size = 10 , border =4) 
-            # qr.add_data(link) 
-            # qr.make(fit= True)
-
-            # img = qr.make_image(fill_color="black", back_color="white") 
-            # img.save(f"{nom}.png")
-
 
             #autre methode 
 
@@ -304,7 +298,7 @@ def pasteurR():
                 else:
                     
                     cur = con.cursor()
-                    cur.execute("insert into pasteurs(nomP,postnomP,prenomP,formation,etatcivile,phoneP,emailP,nomEgise,commune,fonctionP,userID,photoP,nomAncienP,pasteurAncienFormation,nomProvince,nomAncienPays,adresseP , nomAncienEg,MonpasteurPhone,qrcode,nomAncienAdresse) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" ,[nom,postnom,prenom,formation,etat,phone,email,eglise,commune,4,session['id'],photo.filename,nomAP,formationA,provinceA,pays,adresse,egliseA, phoneA,filenames , ad ])   
+                    cur.execute("insert into pasteurs(nomP,postnomP,prenomP,formation,etatcivile,phoneP,emailP,nomEgise,commune_secteur,fonctionP,userID,photoP,nomAncienP,pasteurAncienFormation,nomProvince,nomAncienPays,adresseP , nomAncienEg,MonpasteurPhone,qrcode,nomAncienAdresse,quartier_village,paysP,district_territoire) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)" ,[nom,postnom,prenom,formation,etat,phone,email,eglise,commune,4,session['id'],photo.filename,nomAP,formationA,provinceA,pays,adresse,egliseA, phoneA,filenames , ad , quartier,paysP,district ])   
                     con.commit()
                     cur.close()
                     flash("information enregistre")
@@ -399,8 +393,16 @@ def updateP(idP):
             etat = request.form['etat']
             formation = request.form['formation']
             email = request.form['email']
-            # photo = request.files['photo']
             eglise = request.form['eglise']
+            # photo = request.files['photo']
+
+
+            #information ajoute
+            district = request.form['district']
+            paysP    = request.form['paysP']
+            quartier = request.form['quartier'] 
+
+            
             # information ancien pasteur
 
             nomAP = request.form['nomAP']

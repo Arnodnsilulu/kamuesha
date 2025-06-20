@@ -58,7 +58,7 @@
                             <th>phone</th>
                             <th>email</th>
                             <th>eglise</th>
-                            <th>commune</th>
+                            <th>commune/secteur</th>
                             <th>adresse</th>
                             <th>pasteur</th>
                             <th>adresse</th>
@@ -66,6 +66,9 @@
                             <th>pays</th>
                             <th>photo</th>
                             <th>qrcode</th>
+                            <th>pays</th>
+                            <th>quartier/village</th>
+                            <th>district/territoire</th>
                             <th>traitement</th>
                           </tr>
                         </thead>
@@ -98,6 +101,10 @@
                                   <img src="static/qrcode/{{i[23]}}" alt="" width="50"> 
                                 </a>
                               </td>
+
+                              <td>{{i[25]}}</td>
+                              <td>{{i[10]}}</td>
+                              <td>{{i[8]}}</td>
 
                               <td>
                                 <a href="/addP/{{i[0]}}" class="btn btn-success">Ajout</a>
