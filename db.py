@@ -82,16 +82,16 @@ db.execute("""
             foreign key(fonctionP) references fonctions(idFonction) on delete no action on update no action )
  """)
 
-db.execute('alter table pasteurs add nomAncienP varchar(40)') 
-db.execute('alter table pasteurs add nomAncienEg varchar(30)') 
-db.execute('alter table pasteurs add pasteurAncienFormation char(30)') 
-db.execute('alter table pasteurs add nomAncienAdresse varchar(30)')
-db.execute('alter table pasteurs add nomProvince varchar(30)') 
-db.execute('alter table pasteurs add nomAncienPays varchar(30)') 
-db.execute('alter table pasteurs add postnomP varchar(40)') 
-db.execute('alter table pasteurs add qrcode longtext') 
-db.execute('alter table pasteurs add MonpasteurPhone varchar(15)')
-
+# db.execute('alter table pasteurs add nomAncienP varchar(40)') 
+# db.execute('alter table pasteurs add nomAncienEg varchar(30)') 
+# db.execute('alter table pasteurs add pasteurAncienFormation char(30)') 
+# db.execute('alter table pasteurs add nomAncienAdresse varchar(30)')
+# db.execute('alter table pasteurs add nomProvince varchar(30)') 
+# db.execute('alter table pasteurs add nomAncienPays varchar(30)') 
+# db.execute('alter table pasteurs add postnomP varchar(40)') 
+# db.execute('alter table pasteurs add qrcode longtext') 
+# db.execute('alter table pasteurs add MonpasteurPhone varchar(15)')
+db.execute('alter table pasteurs add paysP varchar(30)')
 
 
 #
