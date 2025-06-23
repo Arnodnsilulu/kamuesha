@@ -110,6 +110,7 @@
                                 <a href="/addP/{{i[0]}}" class="btn btn-success">Ajout</a>
                                 <a href="/lstMPP/{{i[0]}}" class="btn btn-secondary">Ministres</a>
                                 <a href="/updateP/{{i[0]}}" class="btn btn-primary">Modifier</a>
+                                <a href="/carte/{{i[0]}}" target="_blank" class="btn btn-warning">carte</a>
                                 <!-- seulement administrateur centrale -->
                                  {% if session['fonction'] ==  2 %}
                                 <a href="/statutU/{{i[0]}}" class="btn btn-success">statut</a> 

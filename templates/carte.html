@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>carte</title>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background: whitesmoke;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2px;
+            flex-wrap: wrap;
+        }
+
+        /* block 1*/
+
+        .block1{
+            width: 640px;
+            height: 370px;
+            border: 1px solid;
+        }
+
+         /* block 2 */
+
+         .block2{
+            width: 640px;
+            margin: 0 auto ;
+            margin-top: 2px;
+            height: 50px;
+            /* border: 1px solid; */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .block2 > h2{
+            text-transform: uppercase;
+            text-decoration: underline;
+            padding: 1px;
+        }
+
+        /*end block 2*/
+
+        /* block 3*/
+        .block3{
+            width: 640px;
+            height: 250px;
+            /* border: 1px solid; */
+            display: flex;
+
+
+
+        }
+
+        /* .block3 > aside{
+
+
+            margin-left: 2px;
+        } */
+
+        .sous1{
+
+            height: 200px;
+            width: 210px;
+            border: 1px solid;
+            margin-left: 10px;
+            margin-top: 10px;
+        }
+
+        .sous2{
+
+            height: 200px;
+            width: 530px;
+            /* border: 1px solid; */
+            margin-top: 10px;
+            /* border: 2px solid gold; */
+        }
+
+        .sous2 ul li{
+            list-style: none;
+            font-size: 20px;
+            letter-spacing: 1px;
+            padding: 4px 4px;
+            text-transform: capitalize;
+            /* font-family: arial; */
+            
+
+        }
+
+        /*finale */
+        .finale > h2{
+            text-align: center;
+        }
+
+        /* partie verso*/
+        .b1 > h2,h3 , p{
+            text-align: center;
+        }
+
+        .flex{
+            display: flex;
+            height: 120px;
+            gap: 30px;
+            /* border: 1px solid; */
+        }
+
+        .flex .laisse{
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: red;
+        }
+
+        .auto h3{
+            text-align: center;
+            color: red;
+        }
+
+        .passe{
+                letter-spacing: 5px;
+                font-size: 1.6em;
+                text-align: center;
+
+        }
+
+
+    </style>
+</head>
+<body>
+    <section class="block1">
+        <!-- deuxieme block -->
+         <section class="block2">
+                <h2>message du temps de la fin</h2>
+         </section>
+         <!-- troisieme block -->
+          <section class="block3">
+            <!-- image de la carte -->
+            <aside class="sous1">
+                <!-- <img src="" alt="" width="210" height="200">  -->
+                 <img src="/static/pasteurs/{{data[14]}}"  width="200" height="200" alt="">
+            </aside>
+
+            <aside class="sous2">
+                <ul class="text-capitalize">
+                    <li>NOM     : {{data[1]}}</li>
+                    <li>Postnom : {{data[22]}}</li>
+                     <li>Prenom  : {{data[2]}}</li>
+                    <li>fonction: pasteur</li>     
+                    <li>Eglise  : {{data[7]}}</li>
+                    <li>adresse : {{data[11]}}</li>
+                </ul>
+            </aside>
+
+
+          </section>
+           <!-- section finale -->
+
+           <section class="finale">
+            <h2>jesus-christ est le le meme hier,aujourd'hui et eternelement</h2>
+           </section>
+
+
+    </section>
+
+    <section class="block1">
+        <section class="b1">
+            <p>République Démocratique du congo</p>
+            <p>centre du reveil missionnaire de kamuesha</p>
+            <p class="blue">C.R.M.K/ASBL</p>
+            <p class="nume">N° {{genere}}/CAB/ME/MIN/J&GS/2025</p>
+        </section >
+
+        <aside class="flex">
+            <section class="qrcode">
+                <img src="/static/qrcode/{{data[23]}}"  width="150" height="150" alt="">
+    
+            </section>
+    
+            <section>
+                <h2 class="laisse"> Carte missionnaire</h2>
+                <h1 class="passe">laisser-passez</h1>
+            </section>
+
+        </aside>
+        <section class="auto">
+            <h3>
+                les autorites tant civiles que militaires sont priees d'apporter leur assistance au porteurde cette carte
+
+            </h3>
+        </section>
+
+        
+
+
+    </section>
+</body>
+</html>

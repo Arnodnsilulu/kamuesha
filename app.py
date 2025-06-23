@@ -6,6 +6,7 @@ import io
 import pyqrcode 
 import webview 
 from datetime import datetime, timedelta
+import random as rd 
 
 
 
@@ -675,6 +676,29 @@ def lstMPP(idM):
             return render_template('lstMPP.html' , dataA = dataA)
     else:
         return redirect('/login')
+#
+# 
+# genere une carte 
+# 
+@app.route('/carte/<string:idP>',methods = ['POST','GET']) 
+def carte(idP):
+    if 'session' in session:
+
+        with sqlite3.connect('crmk.db') as con :
+            cur = con.cursor()
+            cur.execute("select * from pasteurs where idP = ?" , [idP])
+            data = cur.fetchone() 
+
+            #genere un numero
+            
+
+            alph = "0123456987"
+            ref = ''.join(rd.sample(alph,4)) 
+
+
+            return render_template('carte.html', data = data , genere = ref)  
+    else:
+        return       
 
 webview.create_window('apk' , app)    
 
