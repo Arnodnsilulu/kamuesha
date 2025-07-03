@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>carte</title>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background: whitesmoke;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2px;
+            flex-wrap: wrap;
+        }
+
+        /* block 1*/
+
+        .block1{
+            width: 325px;
+            height: 204px;
+            border: 1px solid;
+        }
+
+         /* block 2 */
+
+         .block2{
+            width: 640px;
+            margin: 0 auto ;
+            margin-top: 2px;
+            height: 50px;
+            /* border: 1px solid; */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .block2 > h2{
+            text-transform: uppercase;
+            text-decoration: underline;
+            padding: 1px;
+        }
+
+        /*end block 2*/
+
+        /* block 3*/
+        .block3{
+            width: 640px;
+            height: 250px;
+            /* border: 1px solid; */
+            display: flex;
+
+
+
+        }
+
+        /* .block3 > aside{
+
+
+            margin-left: 2px;
+        } */
+
+        .sous1{
+
+            height: 90px;
+            width: 90px;
+            border: 1px solid;
+            margin-left: 10px;
+            margin-top: 10px;
+        }
+
+        .sous2{
+
+            height: 100px;
+            width: 200px;
+            /* border: 1px solid; */
+            margin-top: 10px;
+            /* border: 2px solid gold; */
+        }
+
+        .sous2 ul li{
+            list-style: none;
+            font-size: 20px;
+            letter-spacing: 1px;
+            padding: 4px 4px;
+            text-transform: capitalize;
+            /* font-family: arial; */
+            
+
+        }
+
+        /*finale */
+        .finale > h2{
+            text-align: center;
+            font-size: 8px;
+        }
+
+        /* partie verso*/
+        .b1 > h2,h3 , p{
+            text-align: center;
+            font-size: 8px;
+        }
+
+        .flex{
+            display: flex;
+            height: 120px;
+            gap: 30px;
+            /* border: 1px solid; */
+        }
+
+        .flex .laisse{
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: red;
+            font-size: 11px;
+            margin-top: -1px;
+            margin-left: -22px;
+        }
+
+        .auto h3{
+            text-align: center;
+            color: red;
+            font-size: 7px;
+            margin-top: -15px;
+            
+            
+        }
+
+        .passe{
+                letter-spacing: 5px;
+                font-size: 10px;
+                text-align: center;
+                margin-left: -25px;
+
+        }
+
+        .qrcode{
+          margin-left: 5px;
+        }
+
+       
+
+
+    </style>
+</head>
+<body>
+   
+
+     <section class="block1">
+        <section class="b1">
+            <p>République Démocratique du congo</p>
+            <p>centre du reveil missionnaire de kamuesha</p>
+            <p class="blue">C.R.M.K/ASBL</p>
+            <p class="nume">N° {{genere}}/CAB/ME/MIN/J&GS/2025</p>
+        </section >
+
+        <aside class="flex">
+            <section class="qrcode">
+                <img src="/static/qrcode/{{data[23]}}"  width="90" height="95" alt="">
+    
+            </section>
+    
+            <section>
+                <h2 class="laisse"> Carte pastorale</h2>
+                <h1 class="passe">laisser-passez</h1>
+            </section>
+
+        </aside>
+        <section class="auto">
+            <h3>
+                les autorites tant civiles que militaires sont priees d'apporter leur assistance au porteurde cette carte
+
+            </h3>
+        </section>
+
+        
+
+
+    </section> 
+</body>
+</html>

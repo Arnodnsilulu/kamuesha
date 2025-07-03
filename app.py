@@ -678,7 +678,7 @@ def lstMPP(idM):
         return redirect('/login')
 #
 # 
-# genere une carte 
+# genere une carte  face
 # 
 @app.route('/carte/<string:idP>',methods = ['POST','GET']) 
 def carte(idP):
@@ -698,10 +698,34 @@ def carte(idP):
 
             return render_template('carte.html', data = data , genere = ref)  
     else:
-        return       
+        return 
+
+#
+# 
+# genere une carte  face
+# 
+@app.route('/verso/<string:idP>',methods = ['POST','GET']) 
+def verso(idP):
+    if 'session' in session:
+
+        with sqlite3.connect('crmk.db') as con :
+            cur = con.cursor()
+            cur.execute("select * from pasteurs where idP = ?" , [idP])
+            data = cur.fetchone() 
+
+            #genere un numero
+            
+
+            alph = "0123456987"
+            ref = ''.join(rd.sample(alph,4)) 
+
+
+            return render_template('verso.html', data = data , genere = ref)  
+    else:
+        return redirect('/login')          
 
 webview.create_window('apk' , app)    
 
 if __name__ == '__main__':
-    app.run(debug=True)
-    # webview.start() 
+   # app.run(debug=True)
+     webview.start() 
