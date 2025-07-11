@@ -98,7 +98,7 @@ def index():
         return redirect('/login')
     
 #
-# deconnexion du systeme 
+# donnexion du systeme 
 #
 @app.route('/deco')
 def deco():
