@@ -104,6 +104,8 @@ def index():
 def deco():
     session.clear()
     return redirect('/')
+    #deconnexion 
+    
 
 #
 ##
